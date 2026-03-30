@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://jcconsultoriaestrategica.com/sitemap.xml
+
+# Bloquear archivos internos innecesarios
+Disallow: /assets/drafts/
+Disallow: /admin/
