@@ -1111,9 +1111,83 @@
   }
 
   /* ─── RESPONSIVE ─── */
+
+  /* ─── MENÚ HAMBURGUESA (MÓVIL) ─── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+    z-index: 200;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--azul);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 73px; left: 0; right: 0;
+    background: rgba(244,244,246,0.98);
+    backdrop-filter: blur(16px);
+    border-bottom: 2px solid rgba(197,165,114,0.3);
+    z-index: 99;
+    padding: 1.5rem 2rem;
+    flex-direction: column;
+    gap: 0;
+    animation: slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .mobile-menu.open { display: flex; }
+
+  .mobile-menu a {
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--texto-medio);
+    font-weight: 500;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(197,165,114,0.15);
+    transition: color 0.3s;
+  }
+
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover { color: var(--azul); }
+
+  .mobile-menu .btn-nav-mobile {
+    background: var(--azul);
+    color: var(--oro) !important;
+    padding: 0.8rem 1.2rem;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 0.5rem;
+    border-bottom: none !important;
+  }
+
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
     .nav-links { display: none; }
+    .hamburger { display: flex; }
     #hero { padding: 7rem 1.5rem 3rem; }
     .hero-stats { position: static; flex-direction: row; margin-top: 3rem; gap: 2rem; }
     .hero-stats .stat { text-align: left; }
@@ -1146,7 +1220,20 @@
     <li><a href="#consultoria">Sobre JC</a></li>
     <li><a href="#recursos" class="btn-nav">Agendar Consulta</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menú" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MENÚ MÓVIL -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#propuesta" onclick="closeMenu()">Propuesta</a>
+  <a href="#servicios" onclick="closeMenu()">Servicios</a>
+  <a href="#recursos" onclick="closeMenu()">Recursos</a>
+  <a href="blog.html" onclick="closeMenu()">Blog</a>
+  <a href="#consultoria" onclick="closeMenu()">Sobre JC</a>
+  <a href="#recursos" class="btn-nav-mobile" onclick="closeMenu()">Agendar Consulta</a>
+</div>
 
 <!-- HERO -->
 <section id="hero" aria-label="Presentación principal">
@@ -1473,6 +1560,25 @@
 </footer>
 
 <script>
+
+  // ── Menú hamburguesa
+  function toggleMenu() {
+    const ham = document.getElementById('hamburger');
+    const menu = document.getElementById('mobile-menu');
+    ham.classList.toggle('open');
+    menu.classList.toggle('open');
+  }
+
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobile-menu').classList.remove('open');
+  }
+
+  // Cerrar menú al hacer scroll
+  window.addEventListener('scroll', () => {
+    closeMenu();
+  });
+
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
