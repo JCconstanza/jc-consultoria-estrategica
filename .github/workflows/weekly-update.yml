@@ -1,0 +1,45 @@
+name: 🤖 Actualización Semanal del Blog
+
+on:
+  # Ejecutar cada lunes a las 8:00 AM (hora RD = UTC-4)
+  schedule:
+    - cron: '0 12 * * 1'
+
+  # Permitir ejecución manual desde GitHub
+  workflow_dispatch:
+
+jobs:
+  actualizar-blog:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Clonar repositorio
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Instalar dependencias
+        run: |
+          pip install anthropic
+
+      - name: 🤖 Generar nuevo artículo
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python update_blog.py
+
+      - name: 📤 Publicar cambios automáticamente
+        run: |
+          git config --global user.name "JC Blog Bot"
+          git config --global user.email "constanzasoluciones@gmail.com"
+          git add blog.html
+          git diff --staged --quiet || git commit -m "✨ Nuevo artículo semanal - $(date +'%d/%m/%Y')"
+          git push
