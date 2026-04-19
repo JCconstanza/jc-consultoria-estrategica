@@ -47,14 +47,19 @@
     background: rgba(244,244,246,0.94);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(197,165,114,0.2);
+    animation: slideDown 0.6s ease both;
   }
+
+  @keyframes slideDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
 
   .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
 
   .monogram {
     width: 42px; height: 42px; background: var(--azul); border-radius: 6px;
     display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+    transition: transform 0.3s ease;
   }
+  .monogram:hover { transform: rotate(-3deg) scale(1.05); }
   .monogram::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(197,165,114,0.3), transparent); }
   .monogram span { font-family: 'Noto Serif', serif; font-weight: 700; color: var(--oro); font-size: 1rem; letter-spacing: -0.5px; position: relative; z-index: 1; }
 
@@ -86,11 +91,24 @@
     font-family: 'Noto Serif', serif; font-weight: 700;
     font-size: 20vw; color: rgba(197,165,114,0.04);
     line-height: 1; user-select: none; pointer-events: none;
+    animation: slowDrift 8s ease-in-out infinite alternate;
   }
 
-  .hero-line { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, transparent, var(--oro), transparent); opacity: 0.6; }
+  @keyframes slowDrift { from { transform: translateY(-50%) translateX(0); } to { transform: translateY(-50%) translateX(20px); } }
 
-  .blog-hero-content { position: relative; z-index: 2; max-width: 680px; animation: fadeUp 0.8s ease both; }
+  .hero-line { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, transparent, var(--oro), transparent); opacity: 0.6; animation: lineGlow 3s ease-in-out infinite alternate; }
+  @keyframes lineGlow { from { opacity:0.3; } to { opacity:0.9; } }
+
+  .blog-hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+  .blog-hero-content > * {
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .blog-hero-content > *:nth-child(1) { animation-delay: 0.2s; }
+  .blog-hero-content > *:nth-child(2) { animation-delay: 0.4s; }
+  .blog-hero-content > *:nth-child(3) { animation-delay: 0.6s; }
+  .blog-hero-content > *:nth-child(4) { animation-delay: 0.8s; }
 
   @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -99,7 +117,44 @@
 
   .blog-hero h1 { font-family: 'Noto Serif', serif; font-weight: 700; font-size: clamp(2rem, 4vw, 3rem); color: var(--blanco); line-height: 1.2; margin-bottom: 1rem; }
   .blog-hero h1 em { font-style: normal; color: var(--oro); }
-  .blog-hero p { font-size: 1rem; color: rgba(244,244,246,0.7); line-height: 1.8; max-width: 520px; }
+  .blog-hero p { font-size: 1rem; color: rgba(244,244,246,0.7); line-height: 1.8; max-width: 520px; margin-bottom: 2rem; }
+
+  /* ─── BUSCADOR HERO ─── */
+  .hero-search {
+    display: flex; gap: 0; max-width: 480px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(197,165,114,0.3);
+    border-radius: 4px; overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .hero-search:focus-within {
+    border-color: var(--oro);
+    box-shadow: 0 0 0 3px rgba(197,165,114,0.15);
+  }
+  .hero-search input {
+    flex: 1; background: none; border: none; outline: none;
+    padding: 0.85rem 1rem;
+    font-family: 'Noto Sans', sans-serif; font-size: 0.88rem;
+    color: var(--blanco);
+  }
+  .hero-search input::placeholder { color: rgba(244,244,246,0.4); }
+  .hero-search button {
+    background: var(--oro); color: var(--azul); border: none;
+    padding: 0.85rem 1.2rem; cursor: pointer;
+    font-size: 1rem; transition: background 0.25s;
+  }
+  .hero-search button:hover { background: var(--oro-claro); }
+
+  /* ─── STATS STRIP ─── */
+  .stats-strip {
+    background: rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(197,165,114,0.1);
+    display: flex; gap: 3rem; padding: 1.4rem 4rem;
+    position: relative; z-index: 2;
+  }
+  .stat { display: flex; align-items: center; gap: 0.6rem; }
+  .stat-num { font-family: 'Noto Serif', serif; font-weight: 700; font-size: 1.1rem; color: var(--oro); }
+  .stat-label { font-size: 0.72rem; color: rgba(244,244,246,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
 
   /* ─── FILTROS ─── */
   .filtros-wrap {
@@ -109,43 +164,61 @@
     padding: 0 4rem;
   }
 
-  .filtros {
-    display: flex; gap: 0; overflow-x: auto;
-    scrollbar-width: none;
-  }
+  .filtros { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
   .filtros::-webkit-scrollbar { display: none; }
 
   .filtro-btn {
     padding: 1rem 1.4rem;
     font-family: 'Noto Sans', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--texto-medio);
-    background: none;
-    border: none;
+    background: none; border: none;
     border-bottom: 2px solid transparent;
-    cursor: pointer;
-    white-space: nowrap;
+    cursor: pointer; white-space: nowrap;
     transition: all 0.25s;
   }
-
   .filtro-btn:hover { color: var(--azul); }
   .filtro-btn.active { color: var(--azul); border-bottom-color: var(--oro); font-weight: 600; }
 
+  /* Sin resultados */
+  .no-results {
+    display: none; text-align: center;
+    padding: 4rem 2rem; color: var(--texto-medio);
+    font-size: 0.9rem; grid-column: 1/-1;
+  }
+  .no-results.visible { display: block; }
+
   /* ─── GRID ARTÍCULOS ─── */
   .blog-main { padding: 4rem 4rem 6rem; position: relative; z-index: 1; }
+
+  /* Banner de búsqueda activa */
+  .search-banner {
+    display: none; align-items: center; justify-content: space-between;
+    background: rgba(197,165,114,0.1); border: 1px solid rgba(197,165,114,0.25);
+    border-radius: 4px; padding: 0.8rem 1.2rem; margin-bottom: 1.5rem;
+  }
+  .search-banner.visible { display: flex; }
+  .search-banner span { font-size: 0.82rem; color: var(--azul); }
+  .search-banner button {
+    background: none; border: none; cursor: pointer;
+    color: var(--texto-medio); font-size: 0.75rem; letter-spacing: 0.08em;
+    text-transform: uppercase; font-weight: 600; transition: color 0.2s;
+  }
+  .search-banner button:hover { color: var(--azul); }
 
   .articulo-featured {
     display: grid; grid-template-columns: 1.2fr 1fr;
     gap: 0; background: var(--blanco);
     border: 1px solid rgba(197,165,114,0.15);
     margin-bottom: 2px;
-    transition: box-shadow 0.3s;
+    transition: box-shadow 0.3s, transform 0.3s;
     cursor: pointer;
   }
-  .articulo-featured:hover { box-shadow: 0 20px 60px rgba(10,35,66,0.1); }
+  .articulo-featured:hover {
+    box-shadow: 0 20px 60px rgba(10,35,66,0.12);
+    transform: translateY(-2px);
+  }
 
   .featured-visual {
     background: var(--azul);
@@ -158,7 +231,9 @@
     content: attr(data-emoji);
     position: absolute; bottom: -1rem; right: -1rem;
     font-size: 8rem; opacity: 0.08; user-select: none; line-height: 1;
+    transition: transform 0.4s ease, opacity 0.4s ease;
   }
+  .articulo-featured:hover .featured-visual::after { transform: scale(1.1) rotate(5deg); opacity: 0.14; }
 
   .featured-visual .art-num {
     font-family: 'Noto Serif', serif; font-weight: 700;
@@ -171,12 +246,11 @@
     font-size: 1.6rem; color: var(--blanco); line-height: 1.3;
     position: relative; z-index: 1;
   }
-
   .featured-visual h2 em { font-style: normal; color: var(--oro); }
 
   .featured-body { padding: 3.5rem; display: flex; flex-direction: column; justify-content: space-between; }
 
-  .art-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .art-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
 
   .art-categoria {
     font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em;
@@ -193,13 +267,25 @@
   .art-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem; }
   .art-tag { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--texto-medio); background: var(--crema); padding: 0.25rem 0.6rem; border-radius: 2px; }
 
+  /* Acciones del artículo */
+  .art-actions { display: flex; align-items: center; justify-content: space-between; }
   .art-link {
     display: inline-flex; align-items: center; gap: 0.5rem;
     font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
     text-transform: uppercase; color: var(--azul); text-decoration: none;
-    transition: gap 0.3s;
+    transition: gap 0.3s, color 0.3s;
   }
   .art-link:hover { gap: 0.8rem; color: var(--oro); }
+
+  .share-btns { display: flex; gap: 0.4rem; }
+  .share-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--crema); border: 1px solid rgba(10,35,66,0.1);
+    cursor: pointer; transition: all 0.25s; font-size: 0.85rem;
+    text-decoration: none; color: var(--texto-medio);
+  }
+  .share-btn:hover { background: var(--azul); color: var(--oro); border-color: var(--azul); transform: translateY(-2px); }
 
   /* Grid normal */
   .articulos-grid {
@@ -209,7 +295,7 @@
 
   .articulo-card {
     background: var(--blanco); padding: 2.5rem;
-    cursor: pointer; transition: background 0.3s;
+    cursor: pointer; transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
     position: relative; overflow: hidden;
     border: 1px solid rgba(197,165,114,0.08);
   }
@@ -220,9 +306,10 @@
     transform: scaleX(0); transition: transform 0.35s ease; transform-origin: left;
   }
   .articulo-card:hover::before { transform: scaleX(1); }
-  .articulo-card:hover { background: #fafafa; }
+  .articulo-card:hover { background: #fafafa; transform: translateY(-3px); box-shadow: 0 12px 32px rgba(10,35,66,0.08); }
 
-  .card-emoji { font-size: 2rem; margin-bottom: 1.2rem; display: block; }
+  .card-emoji { font-size: 2rem; margin-bottom: 1.2rem; display: block; transition: transform 0.3s; }
+  .articulo-card:hover .card-emoji { transform: scale(1.15) rotate(-5deg); }
 
   .card-categoria {
     font-size: 0.62rem; font-weight: 600; letter-spacing: 0.18em;
@@ -238,8 +325,24 @@
   .card-excerpt { font-size: 0.83rem; color: var(--texto-medio); line-height: 1.8; margin-bottom: 1.5rem; }
 
   .card-footer { display: flex; justify-content: space-between; align-items: center; }
+  .card-meta { display: flex; flex-direction: column; gap: 0.2rem; }
   .card-fecha { font-size: 0.7rem; color: rgba(74,85,104,0.6); }
   .card-min { font-size: 0.7rem; color: var(--oro); font-weight: 500; }
+
+  .card-share { display: flex; gap: 0.3rem; }
+  .card-share-btn {
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--crema); border: 1px solid rgba(10,35,66,0.08);
+    cursor: pointer; transition: all 0.2s; font-size: 0.7rem;
+    text-decoration: none; color: var(--texto-medio);
+    opacity: 0; transform: scale(0.8);
+  }
+  .articulo-card:hover .card-share-btn { opacity: 1; transform: scale(1); }
+  .card-share-btn:nth-child(1) { transition-delay: 0s; }
+  .card-share-btn:nth-child(2) { transition-delay: 0.05s; }
+  .card-share-btn:nth-child(3) { transition-delay: 0.1s; }
+  .card-share-btn:hover { background: var(--azul); color: var(--oro); }
 
   /* ─── NEWSLETTER INLINE ─── */
   .newsletter-strip {
@@ -348,7 +451,6 @@
     background: var(--blanco); border: 1px solid rgba(197,165,114,0.2);
     border-radius: 4px; padding: 2rem;
   }
-
   .agente-resultado.visible { display: block; animation: fadeUp 0.4s ease; }
 
   .resultado-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--oro); font-weight: 600; margin-bottom: 1rem; }
@@ -372,88 +474,34 @@
   .articulo-featured.hidden { display: none; }
 
   /* ─── REVEAL ─── */
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
+  /* Nuevo badge */
+  .badge-nuevo {
+    display: inline-block; background: #e53e3e; color: #fff;
+    font-size: 0.55rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 0.15rem 0.45rem; border-radius: 2px;
+    vertical-align: middle; margin-left: 0.4rem; animation: blink 2.5s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+
+  /* Toast de compartir */
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--azul); color: var(--oro); padding: 0.75rem 1.5rem;
+    border-radius: 4px; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em;
+    opacity: 0; transition: all 0.35s ease; z-index: 999; pointer-events: none;
+    border: 1px solid rgba(197,165,114,0.3);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
   /* ─── RESPONSIVE ─── */
-
-  /* ─── MENÚ HAMBURGUESA (MÓVIL) ─── */
-  .hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    padding: 4px;
-    background: none;
-    border: none;
-    z-index: 200;
-  }
-
-  .hamburger span {
-    display: block;
-    width: 24px;
-    height: 2px;
-    background: var(--azul);
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    transform-origin: center;
-  }
-
-  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-  .mobile-menu {
-    display: none;
-    position: fixed;
-    top: 73px; left: 0; right: 0;
-    background: rgba(244,244,246,0.98);
-    backdrop-filter: blur(16px);
-    border-bottom: 2px solid rgba(197,165,114,0.3);
-    z-index: 99;
-    padding: 1.5rem 2rem;
-    flex-direction: column;
-    gap: 0;
-    animation: slideDown 0.3s ease;
-  }
-
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .mobile-menu.open { display: flex; }
-
-  .mobile-menu a {
-    text-decoration: none;
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--texto-medio);
-    font-weight: 500;
-    padding: 0.9rem 0;
-    border-bottom: 1px solid rgba(197,165,114,0.15);
-    transition: color 0.3s;
-  }
-
-  .mobile-menu a:last-child { border-bottom: none; }
-  .mobile-menu a:hover { color: var(--azul); }
-
-  .mobile-menu .btn-nav-mobile {
-    background: var(--azul);
-    color: var(--oro) !important;
-    padding: 0.8rem 1.2rem;
-    border-radius: 4px;
-    text-align: center;
-    margin-top: 0.5rem;
-    border-bottom: none !important;
-  }
-
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
     .nav-links { display: none; }
-    .hamburger { display: flex; }
     .blog-hero { padding: 7rem 1.5rem 3.5rem; }
+    .stats-strip { padding: 1rem 1.5rem; gap: 1.5rem; flex-wrap: wrap; }
     .filtros-wrap { padding: 0 1.5rem; }
     .blog-main { padding: 2.5rem 1.5rem 4rem; }
     .articulo-featured { grid-template-columns: 1fr; }
@@ -466,15 +514,17 @@
     .agente-inner { padding: 2rem; }
     footer { padding: 2rem 1.5rem; }
     .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .card-share-btn { opacity: 1; transform: scale(1); }
   }
 </style>
 </head>
 <body>
 <div class="brand-pattern"></div>
+<div class="toast" id="toast">✓ Enlace copiado al portapapeles</div>
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">
+  <a href="jonathan-constanza.html" class="nav-logo">
     <div class="monogram"><span>.JC</span></div>
     <div class="nav-brand-text">
       <span class="nav-name">Jonathan Constanza</span>
@@ -482,27 +532,14 @@
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="index.html#propuesta">Propuesta</a></li>
-    <li><a href="index.html#servicios">Servicios</a></li>
-    <li><a href="index.html#recursos">Recursos</a></li>
+    <li><a href="jonathan-constanza.html#propuesta">Propuesta</a></li>
+    <li><a href="jonathan-constanza.html#servicios">Servicios</a></li>
+    <li><a href="jonathan-constanza.html#recursos">Recursos</a></li>
     <li><a href="blog.html" class="active">Blog</a></li>
-    <li><a href="index.html#consultoria">Sobre JC</a></li>
-    <li><a href="index.html#recursos" class="btn-nav">Agendar Consulta</a></li>
+    <li><a href="jonathan-constanza.html#consultoria">Sobre JC</a></li>
+    <li><a href="jonathan-constanza.html#recursos" class="btn-nav">Agendar Consulta</a></li>
   </ul>
-  <button class="hamburger" id="hamburger" aria-label="Menú" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
-
-<!-- MENÚ MÓVIL -->
-<div class="mobile-menu" id="mobile-menu">
-  <a href="index.html#propuesta" onclick="closeMenu()">Propuesta</a>
-  <a href="index.html#servicios" onclick="closeMenu()">Servicios</a>
-  <a href="index.html#recursos" onclick="closeMenu()">Recursos</a>
-  <a href="blog.html" class="active" onclick="closeMenu()">Blog</a>
-  <a href="index.html#consultoria" onclick="closeMenu()">Sobre JC</a>
-  <a href="index.html#recursos" class="btn-nav-mobile" onclick="closeMenu()">Agendar Consulta</a>
-</div>
 
 <!-- HERO -->
 <div class="blog-hero">
@@ -511,12 +548,19 @@
     <div class="hero-badge"><span>📚 Blog & Centro de Conocimiento</span></div>
     <h1>Inteligencia fiscal y financiera <em>para tu negocio</em></h1>
     <p>Artículos técnicos, avisos DGII, análisis de datos y estrategias contables. Conocimiento de CPA aplicado al contexto empresarial dominicano.</p>
-    <div style="display:flex;gap:2.5rem;margin-top:2.5rem;position:relative;z-index:2;animation:fadeUp 0.8s ease 0.2s both;">
-      <div><div style="font-family:'Noto Serif',serif;font-weight:700;font-size:1.8rem;color:var(--oro);">7</div><div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(244,244,246,0.4);margin-top:0.2rem;">Categorías</div></div>
-      <div><div style="font-family:'Noto Serif',serif;font-weight:700;font-size:1.8rem;color:var(--oro);">✦</div><div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(244,244,246,0.4);margin-top:0.2rem;">Actualizado 2026</div></div>
-      <div><div style="font-family:'Noto Serif',serif;font-weight:700;font-size:1.8rem;color:var(--oro);">IA</div><div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(244,244,246,0.4);margin-top:0.2rem;">Asistente incluido</div></div>
+    <div class="hero-search">
+      <input type="text" id="search-input" placeholder="Buscar artículos… ej: ITBIS, facturación electrónica" autocomplete="off">
+      <button onclick="ejecutarBusqueda()">🔍</button>
     </div>
   </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-strip" style="background: rgba(255,255,255,0.04);">
+  <div class="stat"><span class="stat-num">9</span><span class="stat-label">Artículos</span></div>
+  <div class="stat"><span class="stat-num">7</span><span class="stat-label">Categorías</span></div>
+  <div class="stat"><span class="stat-num">2026</span><span class="stat-label">Actualizado</span></div>
+  <div class="stat"><span class="stat-num">RD</span><span class="stat-label">Contexto local</span></div>
 </div>
 
 <!-- FILTROS -->
@@ -528,155 +572,206 @@
     <button class="filtro-btn" data-filter="data">Data & Análisis</button>
     <button class="filtro-btn" data-filter="nomina">Nómina & RRHH</button>
     <button class="filtro-btn" data-filter="emprendedor">Emprendedores</button>
-    <button class="filtro-btn" data-filter="dgii">Avisos DGII</button>
-    <button class="filtro-btn" data-filter="tss">TSS</button>
-  </div>
-</div>
-
-<!-- BUSCADOR -->
-<div style="padding:2rem 4rem 0;position:relative;z-index:1;">
-  <div style="display:flex;align-items:center;gap:0.75rem;background:var(--blanco);border:1px solid rgba(197,165,114,0.25);border-radius:4px;padding:0.75rem 1.2rem;max-width:480px;transition:border-color 0.3s,box-shadow 0.3s;" id="search-wrap">
-    <span style="color:var(--oro);font-size:0.9rem;flex-shrink:0;">🔍</span>
-    <input type="text" id="search-input" placeholder="Buscar artículos — ej: ITBIS, nómina, cierre fiscal…"
-      style="flex:1;border:none;outline:none;background:none;font-family:'Noto Sans',sans-serif;font-size:0.88rem;color:var(--texto-oscuro);"
-      oninput="buscarArticulos()">
+    <button class="filtro-btn" data-filter="dgii">Avisos DGII / TSS</button>
+    <button class="filtro-btn" data-filter="facturacion">Facturación Electrónica <span class="badge-nuevo">Nuevo</span></button>
   </div>
 </div>
 
 <!-- ARTÍCULOS -->
-<main class="blog-main">
+<main class="blog-main" id="blog-main">
+
+  <!-- Banner búsqueda -->
+  <div class="search-banner" id="search-banner">
+    <span id="search-banner-text">Mostrando resultados para: ""</span>
+    <button onclick="limpiarBusqueda()">✕ Limpiar búsqueda</button>
+  </div>
 
   <!-- ARTÍCULO DESTACADO -->
-  <article class="articulo-featured reveal" data-cat="fiscal" data-title="Calendario Fiscal 2026 fechas críticas empresa ITBIS IR-17 DGII anticipos">
-    <div class="featured-visual" data-emoji="🏛️">
+  <article class="articulo-featured reveal" data-cat="facturacion" data-title="e-CF Facturación Electrónica DGII 2026 Comprobante Fiscal Electrónico">
+    <div class="featured-visual" data-emoji="🧾">
       <div class="art-num">01</div>
-      <h2>Calendario Fiscal 2026: <em>Todas las fechas críticas</em> que tu empresa debe conocer</h2>
+      <h2>e-CF: Guía completa para implementar la <em>Facturación Electrónica</em> en tu empresa según la DGII</h2>
     </div>
     <div class="featured-body">
       <div>
         <div class="art-meta">
-          <span class="art-categoria">Fiscal / Impuestos</span>
-          <span class="art-fecha">Marzo 2026</span>
-          <span class="art-lectura">· 8 min</span>
+          <span class="art-categoria">Facturación Electrónica</span>
+          <span class="badge-nuevo">Nuevo</span>
+          <span class="art-fecha">Abril 2026</span>
+          <span class="art-lectura">· 14 min</span>
         </div>
-        <p>El incumplimiento de plazos con la DGII genera recargos de hasta el 10% mensual sobre el impuesto no pagado. En este artículo detallo cada fecha de declaración y pago para ITBIS, IR-17, anticipos y retenciones — con un calendario descargable para que tu equipo no pierda ningún vencimiento crítico.</p>
+        <p>La DGII ha fijado plazos definitivos para la adopción del Comprobante Fiscal Electrónico (e-CF). En este artículo explico paso a paso cómo registrarse como emisor electrónico, qué software homologado puedes usar, los tipos de e-CF disponibles, y cómo evitar las sanciones por incumplimiento. Incluye checklist descargable.</p>
         <div class="art-tags">
-          <span class="art-tag">ITBIS</span>
-          <span class="art-tag">IR-17</span>
-          <span class="art-tag">Anticipos</span>
+          <span class="art-tag">e-CF</span>
           <span class="art-tag">DGII</span>
-          <span class="art-tag">Plazos</span>
+          <span class="art-tag">Homologación</span>
+          <span class="art-tag">Comprobante Fiscal</span>
+          <span class="art-tag">2026</span>
         </div>
       </div>
-      <a href="#" class="art-link">Leer artículo completo →</a>
+      <div class="art-actions">
+        <a href="#" class="art-link">Leer artículo completo →</a>
+        <div class="share-btns">
+          <a class="share-btn" title="Compartir en WhatsApp" onclick="compartir('whatsapp','e-CF: Guía completa para implementar Facturación Electrónica en tu empresa según la DGII')">💬</a>
+          <a class="share-btn" title="Compartir en LinkedIn" onclick="compartir('linkedin','e-CF: Guía completa para implementar Facturación Electrónica en tu empresa según la DGII')">in</a>
+          <a class="share-btn" title="Copiar enlace" onclick="compartir('copy','')">🔗</a>
+        </div>
+      </div>
     </div>
   </article>
 
   <!-- GRID DE ARTÍCULOS -->
-  <div class="articulos-grid">
+  <div class="articulos-grid" id="articulos-grid">
 
-    <article class="articulo-card reveal" data-cat="dgii">
+    <article class="articulo-card reveal" data-cat="facturacion" data-title="e-CF tipos comprobante fiscal electrónico B01 B02 B14 DGII consumidor final">
+      <span class="card-emoji">🗂️</span>
+      <span class="card-categoria">Facturación Electrónica <span class="badge-nuevo">Nuevo</span></span>
+      <h3 class="card-title">Tipos de e-CF: cuál usar según el tipo de transacción y cliente</h3>
+      <p class="card-excerpt">B01, B02, B14, B15… cada tipo de Comprobante Fiscal Electrónico tiene un uso específico. Emitir el tipo incorrecto puede anular la deducción de tu cliente y exponerte a sanciones. Guía práctica con ejemplos reales.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="card-fecha">10 Abr 2026</span>
+          <span class="card-min">8 min</span>
+        </div>
+        <div class="card-share">
+          <a class="card-share-btn" title="WhatsApp" onclick="compartir('whatsapp','Tipos de e-CF: cuál usar según el tipo de transacción y cliente')">💬</a>
+          <a class="card-share-btn" title="LinkedIn" onclick="compartir('linkedin','Tipos de e-CF')">in</a>
+          <a class="card-share-btn" title="Copiar enlace" onclick="compartir('copy','')">🔗</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="articulo-card reveal" data-cat="dgii" data-title="DGII actualización normativa 2026 impuestos resolución">
+      <span class="card-emoji">📢</span>
+      <span class="card-categoria">Aviso DGII <span class="badge-nuevo">Nuevo</span></span>
+      <h3 class="card-title">Resoluciones DGII Q1 2026: los cambios que afectan tu declaración ahora mismo</h3>
+      <p class="card-excerpt">La DGII publicó tres resoluciones claves en el primer trimestre de 2026 que modifican procedimientos de declaración, tasas de interés por mora y requisitos de documentación para créditos fiscales. Aquí el resumen ejecutivo.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="card-fecha">5 Abr 2026</span>
+          <span class="card-min">6 min</span>
+        </div>
+        <div class="card-share">
+          <a class="card-share-btn" title="WhatsApp" onclick="compartir('whatsapp','Resoluciones DGII Q1 2026')">💬</a>
+          <a class="card-share-btn" title="LinkedIn" onclick="compartir('linkedin','Resoluciones DGII Q1 2026')">in</a>
+          <a class="card-share-btn" title="Copiar enlace" onclick="compartir('copy','')">🔗</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="articulo-card reveal" data-cat="dgii" data-title="DGII amplía plazo declaración jurada IR-2 personas físicas abril 2026">
       <span class="card-emoji">📢</span>
       <span class="card-categoria">Aviso DGII</span>
       <h3 class="card-title">DGII amplía plazo para declaración jurada del IR-2 hasta el 30 de abril 2026</h3>
       <p class="card-excerpt">La Dirección General de Impuestos Internos extendió el plazo para personas físicas. Te explico qué significa para ti y cómo aprovechar el tiempo extra para optimizar tu declaración.</p>
       <div class="card-footer">
-        <span class="card-fecha">28 Mar 2026</span>
-        <span class="card-min">5 min</span>
+        <div class="card-meta">
+          <span class="card-fecha">28 Mar 2026</span>
+          <span class="card-min">5 min</span>
+        </div>
+        <div class="card-share">
+          <a class="card-share-btn" title="WhatsApp" onclick="compartir('whatsapp','DGII amplía plazo IR-2 abril 2026')">💬</a>
+          <a class="card-share-btn" title="LinkedIn" onclick="compartir('linkedin','DGII amplía plazo IR-2 abril 2026')">in</a>
+          <a class="card-share-btn" title="Copiar enlace" onclick="compartir('copy','')">🔗</a>
+        </div>
       </div>
     </article>
 
-    <article class="articulo-card reveal" data-cat="data">
+    <article class="articulo-card reveal" data-cat="data" data-title="KPIs financieros empresario dominicano margen bruto EBITDA flujo caja">
       <span class="card-emoji">📊</span>
       <span class="card-categoria">Data & Análisis</span>
       <h3 class="card-title">5 KPIs financieros que todo empresario dominicano debe monitorear cada mes</h3>
       <p class="card-excerpt">El margen bruto, el ciclo de conversión de efectivo, el EBITDA ajustado y dos indicadores más que separan las empresas que escalan de las que sobreviven. Con fórmulas aplicables desde hoy.</p>
       <div class="card-footer">
-        <span class="card-fecha">20 Mar 2026</span>
-        <span class="card-min">10 min</span>
+        <div class="card-meta">
+          <span class="card-fecha">20 Mar 2026</span>
+          <span class="card-min">10 min</span>
+        </div>
+        <div class="card-share">
+          <a class="card-share-btn" title="WhatsApp" onclick="compartir('whatsapp','5 KPIs financieros para empresarios dominicanos')">💬</a>
+          <a class="card-share-btn" title="LinkedIn" onclick="compartir('linkedin','5 KPIs financieros')">in</a>
+          <a class="card-share-btn" title="Copiar enlace" onclick="compartir('copy','')">🔗</a>
+        </div>
       </div>
     </article>
 
-    <article class="articulo-card reveal" data-cat="nomina">
+    <article class="articulo-card reveal" data-cat="nomina" data-title="TSS 2026 tasa cotización nómina seguridad social empleador">
       <span class="card-emoji">👥</span>
       <span class="card-categoria">Nómina & RRHH</span>
       <h3 class="card-title">TSS 2026: Cambios en la tasa de cotización y lo que debes ajustar en tu nómina</h3>
       <p class="card-excerpt">La Tesorería de la Seguridad Social actualizó los parámetros de cotización. Revisa si tu empresa está liquidando correctamente o si estás expuesto a una auditoría.</p>
       <div class="card-footer">
-        <span class="card-fecha">15 Mar 2026</span>
-        <span class="card-min">7 min</span>
+        <div class="card-meta">
+          <span class="card-fecha">15 Mar 2026</span>
+          <span class="card-min">7 min</span>
+        </div>
+        <div class="card-share">
+          <a class="card-share-btn" title="WhatsApp" onclick="compartir('whatsapp','TSS 2026: cambios en cotización nómina')">💬</a>
+          <a class="card-share-btn" title="LinkedIn" onclick="compartir('linkedin','TSS 2026')">in</a>
+          <a class="card-share-btn" title="Copiar enlace" onclick="compartir('copy','')">🔗</a>
+        </div>
       </div>
     </article>
 
-    <article class="articulo-card reveal" data-cat="contabilidad">
+    <article class="articulo-card reveal" data-cat="contabilidad" data-title="cierre fiscal 2025 lista verificación documentos estados financieros">
       <span class="card-emoji">📋</span>
       <span class="card-categoria">Contabilidad</span>
       <h3 class="card-title">Cierre fiscal 2025: Lista de verificación para que no te falte ningún documento</h3>
       <p class="card-excerpt">Muchas empresas llegan al cierre sin estados financieros actualizados, conciliaciones bancarias pendientes o facturas sin registrar. Esta guía evita sorpresas de última hora.</p>
       <div class="card-footer">
-        <span class="card-fecha">10 Mar 2026</span>
-        <span class="card-min">9 min</span>
+        <div class="card-meta">
+          <span class="card-fecha">10 Mar 2026</span>
+          <span class="card-min">9 min</span>
+        </div>
+        <div class="card-share">
+          <a class="card-share-btn" title="WhatsApp" onclick="compartir('whatsapp','Cierre fiscal 2025: lista de verificación')">💬</a>
+          <a class="card-share-btn" title="LinkedIn" onclick="compartir('linkedin','Cierre fiscal 2025')">in</a>
+          <a class="card-share-btn" title="Copiar enlace" onclick="compartir('copy','')">🔗</a>
+        </div>
       </div>
     </article>
 
-    <article class="articulo-card reveal" data-cat="emprendedor">
+    <article class="articulo-card reveal" data-cat="emprendedor" data-title="SRL empresa individual estructura legal negocio República Dominicana tributaria">
       <span class="card-emoji">🚀</span>
       <span class="card-categoria">Emprendedores</span>
       <h3 class="card-title">¿SRL o empresa individual? Cuál estructura legal conviene más para tu negocio en RD</h3>
       <p class="card-excerpt">La decisión de la estructura legal afecta tu carga tributaria, tu responsabilidad personal y tu capacidad de obtener financiamiento. Un análisis práctico sin jerga legal innecesaria.</p>
       <div class="card-footer">
-        <span class="card-fecha">5 Mar 2026</span>
-        <span class="card-min">11 min</span>
+        <div class="card-meta">
+          <span class="card-fecha">5 Mar 2026</span>
+          <span class="card-min">11 min</span>
+        </div>
+        <div class="card-share">
+          <a class="card-share-btn" title="WhatsApp" onclick="compartir('whatsapp','¿SRL o empresa individual en RD?')">💬</a>
+          <a class="card-share-btn" title="LinkedIn" onclick="compartir('linkedin','SRL vs empresa individual RD')">in</a>
+          <a class="card-share-btn" title="Copiar enlace" onclick="compartir('copy','')">🔗</a>
+        </div>
       </div>
     </article>
 
-    <article class="articulo-card reveal" data-cat="fiscal">
+    <article class="articulo-card reveal" data-cat="fiscal" data-title="ITBIS reducción legal exenciones créditos fiscales DGII 2026">
       <span class="card-emoji">⚡</span>
       <span class="card-categoria">Fiscal / Impuestos</span>
       <h3 class="card-title">Cómo reducir legalmente tu carga de ITBIS sin violar ninguna norma de la DGII</h3>
       <p class="card-excerpt">Exenciones que aplican, créditos fiscales subutilizados y la estructuración correcta de tus compras. Todo dentro del marco legal dominicano vigente en 2026.</p>
       <div class="card-footer">
-        <span class="card-fecha">28 Feb 2026</span>
-        <span class="card-min">12 min</span>
+        <div class="card-meta">
+          <span class="card-fecha">28 Feb 2026</span>
+          <span class="card-min">12 min</span>
+        </div>
+        <div class="card-share">
+          <a class="card-share-btn" title="WhatsApp" onclick="compartir('whatsapp','Cómo reducir legalmente tu ITBIS')">💬</a>
+          <a class="card-share-btn" title="LinkedIn" onclick="compartir('linkedin','Reducir ITBIS legalmente')">in</a>
+          <a class="card-share-btn" title="Copiar enlace" onclick="compartir('copy','')">🔗</a>
+        </div>
       </div>
     </article>
 
-
-    <article class="articulo-card reveal" data-cat="nomina" data-title="beneficios laborales RD preaviso cesantía bonificación código laboral 2026">
-      <span class="card-emoji">💼</span>
-      <span class="card-categoria">Nómina & RRHH</span>
-      <h3 class="card-title">Beneficios laborales obligatorios en RD: Lo que todo empleador debe saber en 2026</h3>
-      <p class="card-excerpt">Preaviso, cesantía, bonificación y regalía pascual. Un resumen práctico del Código Laboral dominicano para que no cometas errores costosos con tu personal.</p>
-      <div class="card-footer">
-        <span class="card-fecha">20 Feb 2026</span>
-        <span class="card-min">8 min</span>
-      </div>
-    </article>
-
-    <article class="articulo-card reveal" data-cat="data" data-title="dashboard financiero empresa Power BI Excel rentabilidad análisis KPI">
-      <span class="card-emoji">📈</span>
-      <span class="card-categoria">Data & Análisis</span>
-      <h3 class="card-title">Cómo construir un dashboard financiero para tu empresa dominicana desde cero</h3>
-      <p class="card-excerpt">Con Power BI o Excel puedes tener visibilidad completa de tu rentabilidad, flujo de caja y proyecciones. La estructura que usamos con nuestros clientes.</p>
-      <div class="card-footer">
-        <span class="card-fecha">12 Feb 2026</span>
-        <span class="card-min">14 min</span>
-      </div>
-    </article>
-
-    <article class="articulo-card reveal" data-cat="dgii" data-title="factura electrónica e-CF DGII comprobante fiscal PYMES obligatorio">
-      <span class="card-emoji">🧾</span>
-      <span class="card-categoria">Aviso DGII</span>
-      <h3 class="card-title">Factura electrónica (e-CF): Lo que toda PYME debe saber antes de la fecha límite</h3>
-      <p class="card-excerpt">La DGII avanza en la implementación obligatoria de los Comprobantes Fiscales Electrónicos. ¿Está tu empresa lista? Fechas, requisitos y pasos concretos.</p>
-      <div class="card-footer">
-        <span class="card-fecha">5 Feb 2026</span>
-        <span class="card-min">9 min</span>
-      </div>
-    </article>
-
-    <div class="no-results" id="no-results" style="display:none;grid-column:1/-1;padding:4rem;text-align:center;font-size:0.9rem;color:var(--texto-medio);">
-      🔍 No se encontraron artículos. Prueba con otro término o usa el asistente IA más abajo.
+    <!-- Sin resultados -->
+    <div class="no-results" id="no-results">
+      <p style="font-size:2rem;margin-bottom:0.8rem;">🔍</p>
+      <p>No se encontraron artículos para tu búsqueda.</p>
+      <p style="font-size:0.78rem;margin-top:0.5rem;color:var(--texto-medio);">Intenta con otro término o <button onclick="limpiarBusqueda()" style="background:none;border:none;color:var(--oro);font-weight:600;cursor:pointer;font-size:0.78rem;">ver todos los artículos</button>.</p>
     </div>
 
   </div>
@@ -704,12 +799,10 @@
     <div class="temas-sugeridos">
       <span class="tema-chip" onclick="setTema(this)">Planificación fiscal Q2 2026</span>
       <span class="tema-chip" onclick="setTema(this)">Errores comunes en declaración ITBIS</span>
-      <span class="tema-chip" onclick="setTema(this)">Cómo interpretar un flujo de caja</span>
+      <span class="tema-chip" onclick="setTema(this)">Cómo interpretar un estado de flujo de caja</span>
       <span class="tema-chip" onclick="setTema(this)">Obligaciones TSS del empleador</span>
       <span class="tema-chip" onclick="setTema(this)">Ventajas fiscales para PYMES en RD</span>
-      <span class="tema-chip" onclick="setTema(this)">Dashboard financiero para mi empresa</span>
-      <span class="tema-chip" onclick="setTema(this)">Cambios DGII 2026</span>
-      <span class="tema-chip" onclick="setTema(this)">Nómina y beneficios laborales RD</span>
+      <span class="tema-chip" onclick="setTema(this)">Facturación electrónica e-CF paso a paso</span>
     </div>
 
     <div class="agente-input-wrap">
@@ -718,143 +811,141 @@
     </div>
 
     <div class="agente-resultado" id="agente-resultado">
-      <div style="background:var(--azul);padding:0.8rem 1.5rem;display:flex;justify-content:space-between;align-items:center;">
-        <div class="resultado-label" style="margin:0;">✦ Borrador generado · JC Asistente</div>
-        <div style="display:flex;gap:0.5rem;">
-          <button class="btn-copiar" onclick="copiarBorrador()" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:3px;cursor:pointer;font-weight:600;border:1px solid rgba(197,165,114,0.4);background:transparent;color:var(--oro);transition:all 0.2s;font-family:'Noto Sans',sans-serif;">📋 Copiar</button>
-          <button onclick="compartirWhatsApp()" style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:3px;cursor:pointer;font-weight:600;border:1px solid #25D366;background:#25D366;color:#fff;font-family:'Noto Sans',sans-serif;">💬 WhatsApp</button>
-        </div>
-      </div>
-      <div style="padding:2rem;">
-        <div class="resultado-content" id="resultado-content"></div>
-      </div>
+      <div class="resultado-label">✦ Borrador generado por JC Asistente</div>
+      <div class="resultado-content" id="resultado-content"></div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;padding-bottom:3rem;border-bottom:1px solid rgba(197,165,114,0.15);margin-bottom:2rem;">
-    <div>
-      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;">
-        <div class="monogram"><span>.JC</span></div>
-        <div class="nav-brand-text">
-          <span style="font-family:'Noto Serif',serif;font-weight:700;font-size:0.95rem;color:var(--blanco);">Jonathan Constanza</span>
-          <span style="font-size:0.65rem;color:var(--oro);letter-spacing:0.12em;text-transform:uppercase;font-weight:500;">Consultoría Estratégica & Data</span>
-        </div>
-      </div>
-      <p style="font-size:0.85rem;color:rgba(244,244,246,0.5);line-height:1.8;max-width:280px;">Consultoría contable y estratégica de élite para empresas dominicanas.</p>
-      <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0.5rem;">
-        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:rgba(244,244,246,0.6);"><span style="color:var(--oro);">📱</span><span>809-931-4911</span></div>
-        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:rgba(244,244,246,0.6);"><span style="color:var(--oro);">📧</span><span>constanzasoluciones@gmail.com</span></div>
-        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:rgba(244,244,246,0.6);"><span style="color:var(--oro);">📸</span><span>@jcconsultoriaestrategica</span></div>
-      </div>
-    </div>
-    <div>
-      <h4 style="font-family:'Noto Serif',serif;font-weight:700;font-size:0.85rem;color:var(--blanco);margin-bottom:1.2rem;">Categorías</h4>
-      <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;">
-        <li><a href="#" style="font-size:0.8rem;color:rgba(244,244,246,0.5);text-decoration:none;">Fiscal / Impuestos</a></li>
-        <li><a href="#" style="font-size:0.8rem;color:rgba(244,244,246,0.5);text-decoration:none;">Contabilidad</a></li>
-        <li><a href="#" style="font-size:0.8rem;color:rgba(244,244,246,0.5);text-decoration:none;">Data & Análisis</a></li>
-        <li><a href="#" style="font-size:0.8rem;color:rgba(244,244,246,0.5);text-decoration:none;">Nómina & RRHH</a></li>
-        <li><a href="#" style="font-size:0.8rem;color:rgba(244,244,246,0.5);text-decoration:none;">Avisos DGII · TSS</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4 style="font-family:'Noto Serif',serif;font-weight:700;font-size:0.85rem;color:var(--blanco);margin-bottom:1.2rem;">JC Consultoría</h4>
-      <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;">
-        <li><a href="index.html" style="font-size:0.8rem;color:rgba(244,244,246,0.5);text-decoration:none;">Sitio Principal</a></li>
-        <li><a href="index.html#servicios" style="font-size:0.8rem;color:rgba(244,244,246,0.5);text-decoration:none;">Servicios</a></li>
-        <li><a href="index.html#recursos" style="font-size:0.8rem;color:rgba(244,244,246,0.5);text-decoration:none;">Checklist Fiscal 2026</a></li>
-        <li><a href="https://wa.me/18099314911" target="_blank" style="font-size:0.8rem;color:rgba(244,244,246,0.5);text-decoration:none;">Agendar Consulta</a></li>
-      </ul>
-    </div>
-  </div>
   <div class="footer-bottom">
     <p class="footer-copy">© 2026 Jonathan Constanza | Consultoría Estratégica. Todos los derechos reservados.</p>
-    <a href="index.html" class="footer-back">← Sitio principal</a>
+    <a href="jonathan-constanza.html" class="footer-back">← Volver al sitio principal</a>
     <div class="footer-seal">.JC</div>
   </div>
 </footer>
 
 <script>
-  // ── Scroll reveal
+  // ── Scroll reveal con stagger
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        setTimeout(() => entry.target.classList.add('visible'), i * 90);
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.08 });
+  }, { threshold: 0.06 });
   reveals.forEach(el => observer.observe(el));
 
   // ── Filtros
-  function aplicarFiltro(filter, busqueda) {
-    let visible = 0;
-    document.querySelectorAll('.articulo-card, .articulo-featured').forEach(card => {
-      const catMatch = filter === 'all' || card.dataset.cat === filter;
-      const textMatch = !busqueda || card.textContent.toLowerCase().includes(busqueda.toLowerCase());
-      const show = catMatch && textMatch;
-      card.classList.toggle('hidden', !show);
-      if (show && card.classList.contains('articulo-card')) visible++;
-    });
-    const nr = document.getElementById('no-results');
-    if (nr) nr.style.display = visible === 0 ? 'block' : 'none';
-  }
-
   document.querySelectorAll('.filtro-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const busqueda = document.getElementById('search-input')?.value || '';
-      aplicarFiltro(btn.dataset.filter, busqueda);
+      const filter = btn.dataset.filter;
+      limpiarBusqueda(false);
+      document.querySelectorAll('.articulo-card, .articulo-featured').forEach(card => {
+        if (filter === 'all' || card.dataset.cat === filter) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+      verificarVacio();
     });
   });
 
-  // ── Búsqueda
-  function buscarArticulos() {
-    const busqueda = document.getElementById('search-input').value;
-    const activeFilter = document.querySelector('.filtro-btn.active')?.dataset.filter || 'all';
-    aplicarFiltro(activeFilter, busqueda);
+  // ── Buscador
+  document.getElementById('search-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') ejecutarBusqueda();
+  });
+
+  function ejecutarBusqueda() {
+    const q = document.getElementById('search-input').value.trim().toLowerCase();
+    if (!q) return;
+
+    // Resetear filtros
+    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('[data-filter="all"]').classList.add('active');
+
+    const banner = document.getElementById('search-banner');
+    document.getElementById('search-banner-text').textContent = `Mostrando resultados para: "${q}"`;
+    banner.classList.add('visible');
+
+    document.querySelectorAll('.articulo-card, .articulo-featured').forEach(card => {
+      const texto = (card.dataset.title || '') + ' ' + card.innerText;
+      if (texto.toLowerCase().includes(q)) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    verificarVacio();
+    document.getElementById('blog-main').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // ── Newsletter (Formspree)
-  async function handleNewsletter(e) {
+  function limpiarBusqueda(resetInput = true) {
+    if (resetInput) document.getElementById('search-input').value = '';
+    document.getElementById('search-banner').classList.remove('visible');
+    document.querySelectorAll('.articulo-card, .articulo-featured').forEach(card => card.classList.remove('hidden'));
+    document.getElementById('no-results').classList.remove('visible');
+  }
+
+  function verificarVacio() {
+    const visibles = document.querySelectorAll('.articulo-card:not(.hidden)');
+    const featured = document.querySelectorAll('.articulo-featured:not(.hidden)');
+    const noRes = document.getElementById('no-results');
+    if (visibles.length === 0 && featured.length === 0) {
+      noRes.classList.add('visible');
+    } else {
+      noRes.classList.remove('visible');
+    }
+  }
+
+  // ── Newsletter
+  function handleNewsletter(e) {
     e.preventDefault();
     const btn = e.target.querySelector('.nl-btn');
-    const email = document.getElementById('nl-email').value;
-    btn.textContent = 'Enviando...';
+    btn.textContent = '✓ Suscrito';
+    btn.style.background = '#1a6b3c';
+    btn.style.color = '#fff';
     btn.disabled = true;
-    try {
-      const res = await fetch('https://formspree.io/f/mpqodzze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ email, _subject: '📬 Nueva suscripción al blog JC', tipo: 'Newsletter' })
-      });
-      btn.textContent = res.ok ? '✓ Suscrito' : 'Error — intenta de nuevo';
-      if (res.ok) { btn.style.background='#1a6b3c'; btn.style.color='#fff'; document.getElementById('nl-email').disabled=true; }
-      else { btn.disabled = false; }
-    } catch(_) { btn.textContent='Error — intenta de nuevo'; btn.disabled=false; }
+    document.getElementById('nl-email').disabled = true;
   }
 
   // ── Chips de temas
   function setTema(el) {
-    document.querySelectorAll('.tema-chip').forEach(c => c.style.background = '');
-    el.style.background = 'var(--azul)';
-    el.style.color = 'var(--oro)';
-    el.style.borderColor = 'var(--azul)';
     document.getElementById('agente-input').value = el.textContent;
     document.getElementById('agente-input').focus();
   }
 
-  // ── Agente IA
-  let ultimoBorrador = '';
+  // ── Compartir
+  function compartir(red, titulo) {
+    const url = encodeURIComponent(window.location.href);
+    const texto = encodeURIComponent(titulo + ' — Blog de Jonathan Constanza, CPA');
+    if (red === 'whatsapp') {
+      window.open(`https://wa.me/?text=${texto}%20${url}`, '_blank');
+    } else if (red === 'linkedin') {
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+    } else if (red === 'copy') {
+      navigator.clipboard.writeText(window.location.href).then(() => mostrarToast('✓ Enlace copiado al portapapeles'));
+    }
+  }
 
+  function mostrarToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // ── Agente IA
   async function generarContenido() {
     const input = document.getElementById('agente-input').value.trim();
-    if (!input) { document.getElementById('agente-input').focus(); return; }
+    if (!input) return;
 
     const btn = document.getElementById('agente-btn');
     const resultado = document.getElementById('agente-resultado');
@@ -862,8 +953,7 @@
 
     btn.textContent = 'Generando...';
     btn.disabled = true;
-    resultado.classList.add('visible');
-    content.innerHTML = '<div style="display:flex;gap:6px;align-items:center;padding:1rem 0;"><span style="display:inline-block;width:8px;height:8px;background:var(--oro);border-radius:50%;animation:pulse 1.2s infinite;"></span><span style="display:inline-block;width:8px;height:8px;background:var(--oro);border-radius:50%;animation:pulse 1.2s 0.2s infinite;"></span><span style="display:inline-block;width:8px;height:8px;background:var(--oro);border-radius:50%;animation:pulse 1.2s 0.4s infinite;"></span></div>';
+    resultado.classList.remove('visible');
 
     try {
       const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -874,66 +964,33 @@
           max_tokens: 1000,
           messages: [{
             role: 'user',
-            content: `Eres Jonathan Constanza, CPA y Data Analyst dominicano con más de 10 años de experiencia en consultoría estratégica, fiscalidad dominicana (DGII, ITBIS, IR-17, TSS) y análisis de datos financieros. Firmas como "Jonathan Constanza | CPA & Consultor Estratégico".
+            content: `Eres Jonathan Constanza, CPA y Data Analyst dominicano con más de 10 años de experiencia en consultoría estratégica, fiscalidad dominicana (DGII, ITBIS, IR-17, TSS, facturación electrónica e-CF) y análisis de datos financieros. Tu estilo es profesional, directo y con autoridad técnica.
 
 Genera un borrador de artículo de blog sobre: "${input}"
 
 El artículo debe:
-- Título atractivo precedido de "TÍTULO:" en una línea separada
-- 3-4 secciones con subtítulos marcados con ##
-- Mencionar regulaciones dominicanas cuando aplique (DGII, TSS, Código Tributario)
-- Al menos un dato o cifra específica relevante
-- Cierre con llamada a la acción: contactar a Jonathan vía WhatsApp 809-931-4911
-- Tono: experto pero accesible
-- Extensión: 380-450 palabras`
+- Tener un título atractivo y orientado al contexto dominicano
+- Incluir 3-4 secciones con subtítulos claros
+- Mencionar regulaciones, entidades o contexto dominicano cuando aplique (DGII, TSS, Código Tributario, e-CF, etc.)
+- Tener un párrafo de cierre con una llamada a la acción invitando a agendar consultoría con Jonathan
+- Usar un tono experto pero accesible
+- Extensión: 350-450 palabras`
           }]
         })
       });
 
       const data = await response.json();
-      ultimoBorrador = data.content?.map(b => b.text || '').join('') || 'No se pudo generar el contenido.';
-      content.style.whiteSpace = 'pre-wrap';
-      content.textContent = ultimoBorrador;
+      const text = data.content?.map(b => b.text || '').join('') || 'No se pudo generar el contenido.';
+      content.textContent = text;
+      resultado.classList.add('visible');
     } catch (err) {
-      content.textContent = '⚠️ Error al conectar. Verifica tu conexión e intenta de nuevo.';
+      content.textContent = 'Error al conectar con el asistente. Verifica tu conexión e intenta de nuevo.';
+      resultado.classList.add('visible');
     }
 
     btn.textContent = 'Generar →';
     btn.disabled = false;
   }
-
-  function copiarBorrador() {
-    if (!ultimoBorrador) return;
-    navigator.clipboard.writeText(ultimoBorrador).then(() => {
-      const btn = document.querySelector('.btn-copiar');
-      if (btn) { btn.textContent = '✓ Copiado'; setTimeout(() => { btn.textContent = '📋 Copiar'; }, 2000); }
-    });
-  }
-
-  function compartirWhatsApp() {
-    if (!ultimoBorrador) return;
-    const msg = encodeURIComponent('📝 *Borrador JC Consultoría*\n\n' + ultimoBorrador.substring(0, 400) + '...\n\n_jcconsultoriaestrategica.com_');
-    window.open('https://wa.me/?text=' + msg, '_blank');
-  }
-
-
-  // ── Menú hamburguesa
-  function toggleMenu() {
-    const ham = document.getElementById('hamburger');
-    const menu = document.getElementById('mobile-menu');
-    ham.classList.toggle('open');
-    menu.classList.toggle('open');
-  }
-
-  function closeMenu() {
-    document.getElementById('hamburger').classList.remove('open');
-    document.getElementById('mobile-menu').classList.remove('open');
-  }
-
-  // Cerrar menú al hacer scroll
-  window.addEventListener('scroll', () => {
-    closeMenu();
-  });
 
   document.getElementById('agente-input').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') generarContenido();
