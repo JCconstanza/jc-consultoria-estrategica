@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#060E1A">
+<title>JC Fiscal – Acceso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul-prof: #060E1A;
+    --azul: #0A2342;
+    --azul-claro: #1a4070;
+    --oro: #C5A572;
+    --oro-claro: #d4bb90;
+    --oro-dim: rgba(197,165,114,0.15);
+    --blanco: #ffffff;
+    --crema: #F4F4F6;
+    --texto-medio: #7a8899;
+    --error: #fc8181;
+    --exito: #68d391;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body { height:100%; overflow:hidden; }
+
+  body {
+    font-family: 'Noto Sans', sans-serif;
+    background: var(--azul-prof);
+    color: var(--blanco);
+    max-width: 430px;
+    margin: 0 auto;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── FONDO ANIMADO ── */
+  .bg-layer {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    overflow: hidden;
+  }
+
+  .bg-orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); opacity: 0.18;
+  }
+  .orb-1 {
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, #1a4070, transparent);
+    top: -80px; left: -80px;
+    animation: orbFloat1 8s ease-in-out infinite alternate;
+  }
+  .orb-2 {
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, #C5A572, transparent);
+    bottom: -60px; right: -60px;
+    opacity: 0.1;
+    animation: orbFloat2 10s ease-in-out infinite alternate;
+  }
+  .orb-3 {
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, #0d2d56, transparent);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    opacity: 0.25;
+    animation: orbFloat3 6s ease-in-out infinite alternate;
+  }
+
+  @keyframes orbFloat1 { from{transform:translate(0,0)} to{transform:translate(30px,40px)} }
+  @keyframes orbFloat2 { from{transform:translate(0,0)} to{transform:translate(-25px,-30px)} }
+  @keyframes orbFloat3 { from{transform:translate(-50%,-50%) scale(1)} to{transform:translate(-50%,-50%) scale(1.3)} }
+
+  /* Grid de líneas decorativas */
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(197,165,114,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(197,165,114,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* ── CONTENEDOR PRINCIPAL ── */
+  .app {
+    position: relative; z-index: 10;
+    height: 100%; display: flex; flex-direction: column;
+    overflow-y: auto; overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── PANTALLAS ── */
+  .screen { display: none; flex-direction: column; min-height: 100%; }
+  .screen.active { display: flex; }
+
+  /* ── SPLASH ── */
+  #screen-splash {
+    align-items: center; justify-content: center;
+    gap: 0; padding: 2rem;
+  }
+
+  .splash-logo-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    animation: splashIn 1s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  @keyframes splashIn {
+    from { opacity:0; transform:scale(0.7) translateY(30px); }
+    to   { opacity:1; transform:scale(1) translateY(0); }
+  }
+
+  .splash-monogram {
+    width: 90px; height: 90px;
+    background: linear-gradient(135deg, var(--azul-claro), var(--azul));
+    border: 1.5px solid rgba(197,165,114,0.35);
+    border-radius: 22px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 60px rgba(197,165,114,0.12), 0 20px 40px rgba(0,0,0,0.4);
+    position: relative; overflow: hidden;
+  }
+  .splash-monogram::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(197,165,114,0.15) 0%, transparent 60%);
+  }
+  .splash-monogram span {
+    font-family: 'Noto Serif', serif; font-weight: 700;
+    color: var(--oro); font-size: 1.8rem; letter-spacing: -1px;
+    position: relative; z-index: 1;
+  }
+
+  .splash-name {
+    font-family: 'Noto Serif', serif; font-weight: 700;
+    font-size: 1.5rem; color: var(--blanco);
+    letter-spacing: -0.02em; margin-bottom: 0.3rem; text-align: center;
+  }
+  .splash-tagline {
+    font-size: 0.7rem; color: var(--oro);
+    letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;
+    text-align: center; margin-bottom: 3rem;
+  }
+
+  .splash-divider {
+    width: 40px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--oro), transparent);
+    margin: 0 auto 3rem;
+    animation: lineGrow 0.8s 0.6s ease both;
+  }
+  @keyframes lineGrow { from{width:0;opacity:0} to{width:40px;opacity:1} }
+
+  .splash-cta {
+    width: 100%; max-width: 300px;
+    display: flex; flex-direction: column; gap: 0.8rem;
+    animation: fadeUp 0.7s 0.8s ease both;
+  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  .btn-primary {
+    width: 100%; padding: 1rem 1.5rem;
+    background: var(--oro);
+    color: var(--azul-prof);
+    border: none; border-radius: 14px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.25s;
+    box-shadow: 0 8px 24px rgba(197,165,114,0.3);
+  }
+  .btn-primary:active { transform: scale(0.97); box-shadow: 0 4px 12px rgba(197,165,114,0.2); }
+  .btn-primary:hover { background: var(--oro-claro); }
+
+  .btn-secondary {
+    width: 100%; padding: 1rem 1.5rem;
+    background: transparent;
+    color: var(--blanco);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .btn-secondary:active { transform: scale(0.97); background: rgba(255,255,255,0.05); }
+  .btn-secondary:hover { border-color: rgba(197,165,114,0.4); color: var(--oro); }
+
+  .splash-footer {
+    margin-top: auto; padding: 1.5rem;
+    text-align: center;
+    font-size: 0.62rem; color: rgba(255,255,255,0.2);
+    letter-spacing: 0.08em;
+    animation: fadeUp 0.7s 1.2s ease both;
+  }
+
+  /* ── LOGIN / REGISTRO ── */
+  #screen-login, #screen-registro {
+    padding: 0;
+  }
+
+  .form-header {
+    padding: 3.5rem 1.8rem 2rem;
+    position: relative;
+  }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: none; border: none; cursor: pointer;
+    color: var(--texto-medio); font-size: 0.75rem;
+    font-family: 'Noto Sans', sans-serif; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 2rem; padding: 0;
+    transition: color 0.2s;
+  }
+  .back-btn:hover { color: var(--oro); }
+  .back-btn span { font-size: 1rem; }
+
+  .form-header-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    border: 1px solid rgba(197,165,114,0.25);
+    padding: 0.3rem 0.8rem; border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  .form-header-badge span { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--oro); font-weight: 600; }
+
+  .form-title {
+    font-family: 'Noto Serif', serif; font-weight: 700;
+    font-size: 1.7rem; color: var(--blanco);
+    line-height: 1.2; margin-bottom: 0.5rem;
+  }
+  .form-title em { font-style: normal; color: var(--oro); }
+  .form-subtitle { font-size: 0.8rem; color: var(--texto-medio); line-height: 1.6; }
+
+  /* Decoración lateral */
+  .form-header::before {
+    content: '';
+    position: absolute; left: 0; top: 3rem; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--oro), transparent);
+    opacity: 0.5;
+  }
+
+  /* ── TARJETA DE FORMULARIO ── */
+  .form-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px 24px 0 0;
+    padding: 2rem 1.8rem;
+    flex: 1;
+    backdrop-filter: blur(20px);
+    position: relative;
+  }
+  .form-card::before {
+    content: '';
+    position: absolute; top: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(197,165,114,0.4), transparent);
+  }
+
+  /* ── CAMPOS ── */
+  .field { margin-bottom: 1.2rem; }
+
+  .field-label {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+  .field-label span {
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--texto-medio);
+  }
+  .field-label a {
+    font-size: 0.68rem; color: var(--oro); text-decoration: none;
+    font-weight: 500; transition: opacity 0.2s;
+  }
+  .field-label a:hover { opacity: 0.7; }
+
+  .field-wrap {
+    position: relative; display: flex; align-items: center;
+  }
+  .field-icon {
+    position: absolute; left: 1rem; font-size: 0.95rem;
+    pointer-events: none; opacity: 0.5;
+  }
+
+  .field-input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.9rem 1rem 0.9rem 2.8rem;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 0.9rem; color: var(--blanco); outline: none;
+    transition: all 0.25s;
+    -webkit-appearance: none;
+  }
+  .field-input::placeholder { color: rgba(255,255,255,0.2); }
+  .field-input:focus {
+    border-color: var(--oro);
+    background: rgba(197,165,114,0.06);
+    box-shadow: 0 0 0 3px rgba(197,165,114,0.1);
+  }
+  .field-input.error { border-color: var(--error); }
+  .field-input.success { border-color: var(--exito); }
+
+  .toggle-pass {
+    position: absolute; right: 1rem; cursor: pointer;
+    font-size: 0.9rem; opacity: 0.4; transition: opacity 0.2s;
+    background: none; border: none; color: var(--blanco); padding: 0;
+  }
+  .toggle-pass:hover { opacity: 0.8; }
+
+  /* Indicador fuerza contraseña */
+  .pass-strength { margin-top: 0.5rem; display: none; }
+  .pass-strength.visible { display: block; }
+  .strength-bar {
+    height: 3px; border-radius: 3px;
+    background: rgba(255,255,255,0.1); margin-bottom: 0.3rem;
+    overflow: hidden;
+  }
+  .strength-fill { height: 100%; border-radius: 3px; transition: all 0.3s; width: 0; }
+  .strength-label { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* Error message */
+  .field-error {
+    font-size: 0.65rem; color: var(--error); margin-top: 0.4rem;
+    display: none; padding-left: 0.3rem;
+  }
+  .field-error.visible { display: block; }
+
+  /* ── ALERT GENERAL ── */
+  .alert {
+    padding: 0.8rem 1rem; border-radius: 10px;
+    font-size: 0.78rem; line-height: 1.5; margin-bottom: 1.2rem;
+    display: none; align-items: center; gap: 0.6rem;
+  }
+  .alert.visible { display: flex; }
+  .alert.error { background: rgba(252,129,129,0.1); border: 1px solid rgba(252,129,129,0.25); color: var(--error); }
+  .alert.success { background: rgba(104,211,145,0.1); border: 1px solid rgba(104,211,145,0.25); color: var(--exito); }
+
+  /* ── SEPARADOR ── */
+  .separator {
+    display: flex; align-items: center; gap: 0.8rem;
+    margin: 1.5rem 0;
+  }
+  .sep-line { flex: 1; height: 1px; background: rgba(255,255,255,0.08); }
+  .sep-text { font-size: 0.65rem; color: rgba(255,255,255,0.25); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* ── SWITCH LOGIN/REGISTER ── */
+  .form-switch {
+    text-align: center; margin-top: 1.5rem;
+    font-size: 0.78rem; color: var(--texto-medio);
+  }
+  .form-switch a {
+    color: var(--oro); text-decoration: none; font-weight: 600; cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .form-switch a:hover { opacity: 0.75; }
+
+  /* ── CHECKBOX ── */
+  .check-wrap {
+    display: flex; align-items: flex-start; gap: 0.7rem;
+    margin-bottom: 1.5rem; cursor: pointer;
+  }
+  .check-wrap input[type="checkbox"] { display: none; }
+  .check-box {
+    width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; margin-top: 1px;
+  }
+  .check-wrap input:checked + .check-box {
+    background: var(--oro); border-color: var(--oro);
+  }
+  .check-wrap input:checked + .check-box::after {
+    content: '✓'; color: var(--azul-prof); font-size: 0.7rem; font-weight: 700;
+  }
+  .check-text { font-size: 0.75rem; color: var(--texto-medio); line-height: 1.5; }
+  .check-text a { color: var(--oro); text-decoration: none; }
+
+  /* ── LOADING BTN ── */
+  .btn-primary.loading {
+    opacity: 0.7; pointer-events: none; position: relative;
+  }
+  .btn-primary.loading::after {
+    content: '';
+    width: 16px; height: 16px;
+    border: 2px solid rgba(10,35,66,0.3); border-top-color: var(--azul);
+    border-radius: 50%; animation: spin 0.7s linear infinite;
+    display: inline-block; margin-left: 0.6rem; vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── RECUPERAR CONTRASEÑA ── */
+  #screen-recovery {
+    padding: 0;
+  }
+
+  /* ── ÉXITO ── */
+  #screen-exito {
+    align-items: center; justify-content: center; padding: 2rem;
+    text-align: center;
+  }
+  .exito-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(104,211,145,0.12); border: 1px solid rgba(104,211,145,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; margin: 0 auto 1.5rem;
+    animation: popIn 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  @keyframes popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+  .exito-title { font-family:'Noto Serif',serif; font-weight:700; font-size:1.4rem; color:var(--blanco); margin-bottom:0.5rem; }
+  .exito-sub { font-size:0.82rem; color:var(--texto-medio); line-height:1.6; margin-bottom:2rem; max-width:260px; }
+
+  /* ── ANIMACIONES DE TRANSICIÓN ── */
+  .slide-left { animation: slideLeft 0.35s cubic-bezier(0.4,0,0.2,1) both; }
+  .slide-right { animation: slideRight 0.35s cubic-bezier(0.4,0,0.2,1) both; }
+  @keyframes slideLeft { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes slideRight { from{opacity:0;transform:translateX(-40px)} to{opacity:1;transform:translateX(0)} }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(10px);
+    background: rgba(10,35,66,0.95);
+    border: 1px solid rgba(197,165,114,0.3);
+    color: var(--blanco); padding: 0.7rem 1.4rem;
+    border-radius: 30px; font-size: 0.78rem; font-weight: 500;
+    opacity: 0; transition: all 0.3s ease; z-index: 999; white-space: nowrap;
+    backdrop-filter: blur(10px);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="bg-layer">
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+</div>
+<div class="bg-grid"></div>
+
+<div class="app" id="app">
+
+  <!-- ══════════ SPLASH ══════════ -->
+  <div class="screen active" id="screen-splash">
+    <div class="splash-logo-wrap">
+      <div class="splash-monogram"><span>.JC</span></div>
+      <div class="splash-name">Jonathan Constanza</div>
+      <div class="splash-tagline">CPA · Data Analyst · Consultor</div>
+    </div>
+
+    <div class="splash-divider"></div>
+
+    <div class="splash-cta">
+      <button class="btn-primary" onclick="ir('login','left')">Iniciar sesión</button>
+      <button class="btn-secondary" onclick="ir('registro','left')">Crear cuenta</button>
+    </div>
+
+    <div class="splash-footer">
+      © 2026 Jonathan Constanza | Consultoría Estratégica · RD
+    </div>
+  </div>
+
+  <!-- ══════════ LOGIN ══════════ -->
+  <div class="screen" id="screen-login">
+
+    <div class="form-header">
+      <button class="back-btn" onclick="ir('splash','right')"><span>←</span> Inicio</button>
+      <div class="form-header-badge"><span>🔐 Acceso seguro</span></div>
+      <div class="form-title">Bienvenido <em>de vuelta</em></div>
+      <div class="form-subtitle">Accede a tu plataforma fiscal personalizada.</div>
+    </div>
+
+    <div class="form-card">
+
+      <div class="alert error" id="login-alert">
+        <span>⚠️</span><span id="login-alert-msg">Correo o contraseña incorrectos.</span>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Correo electrónico</span></div>
+        <div class="field-wrap">
+          <span class="field-icon">✉️</span>
+          <input type="email" class="field-input" id="login-email"
+            placeholder="tu@correo.com" autocomplete="email" inputmode="email">
+        </div>
+        <div class="field-error" id="login-email-err">Ingresa un correo válido.</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">
+          <span>Contraseña</span>
+          <a onclick="ir('recovery','left')">¿Olvidaste tu contraseña?</a>
+        </div>
+        <div class="field-wrap">
+          <span class="field-icon">🔒</span>
+          <input type="password" class="field-input" id="login-pass"
+            placeholder="••••••••" autocomplete="current-password">
+          <button class="toggle-pass" onclick="togglePass('login-pass',this)">👁</button>
+        </div>
+        <div class="field-error" id="login-pass-err">La contraseña debe tener al menos 6 caracteres.</div>
+      </div>
+
+      <label class="check-wrap">
+        <input type="checkbox" id="login-remember">
+        <div class="check-box"></div>
+        <span class="check-text">Mantener sesión iniciada</span>
+      </label>
+
+      <button class="btn-primary" id="login-btn" onclick="doLogin()">Entrar a mi cuenta</button>
+
+      <div class="separator">
+        <div class="sep-line"></div>
+        <span class="sep-text">¿Primera vez?</span>
+        <div class="sep-line"></div>
+      </div>
+
+      <button class="btn-secondary" onclick="ir('registro','left')">Crear cuenta gratis</button>
+
+      <div class="form-switch" style="margin-top:1rem;">
+        ¿Eres consultor? <a onclick="loginDemo()">Acceso demo →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ REGISTRO ══════════ -->
+  <div class="screen" id="screen-registro">
+
+    <div class="form-header">
+      <button class="back-btn" onclick="ir('splash','right')"><span>←</span> Inicio</button>
+      <div class="form-header-badge"><span>✨ Nuevo acceso</span></div>
+      <div class="form-title">Crea tu <em>cuenta</em></div>
+      <div class="form-subtitle">Accede a consultas fiscales, calculadoras y alertas DGII.</div>
+    </div>
+
+    <div class="form-card">
+
+      <div class="alert error" id="reg-alert">
+        <span>⚠️</span><span id="reg-alert-msg">Completa todos los campos.</span>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Nombre completo</span></div>
+        <div class="field-wrap">
+          <span class="field-icon">👤</span>
+          <input type="text" class="field-input" id="reg-nombre"
+            placeholder="Ej: María García" autocomplete="name">
+        </div>
+        <div class="field-error" id="reg-nombre-err">Ingresa tu nombre completo.</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Correo electrónico</span></div>
+        <div class="field-wrap">
+          <span class="field-icon">✉️</span>
+          <input type="email" class="field-input" id="reg-email"
+            placeholder="tu@empresa.com" autocomplete="email" inputmode="email">
+        </div>
+        <div class="field-error" id="reg-email-err">Ingresa un correo válido.</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Contraseña</span></div>
+        <div class="field-wrap">
+          <span class="field-icon">🔒</span>
+          <input type="password" class="field-input" id="reg-pass"
+            placeholder="Mínimo 8 caracteres" autocomplete="new-password"
+            oninput="checkStrength(this.value)">
+          <button class="toggle-pass" onclick="togglePass('reg-pass',this)">👁</button>
+        </div>
+        <div class="pass-strength" id="pass-strength">
+          <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+          <div class="strength-label" id="strength-label"></div>
+        </div>
+        <div class="field-error" id="reg-pass-err">Contraseña demasiado corta.</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Confirmar contraseña</span></div>
+        <div class="field-wrap">
+          <span class="field-icon">🔑</span>
+          <input type="password" class="field-input" id="reg-pass2"
+            placeholder="Repite tu contraseña" autocomplete="new-password">
+          <button class="toggle-pass" onclick="togglePass('reg-pass2',this)">👁</button>
+        </div>
+        <div class="field-error" id="reg-pass2-err">Las contraseñas no coinciden.</div>
+      </div>
+
+      <label class="check-wrap">
+        <input type="checkbox" id="reg-terms">
+        <div class="check-box"></div>
+        <span class="check-text">Acepto los <a href="#">términos de uso</a> y la <a href="#">política de privacidad</a></span>
+      </label>
+
+      <button class="btn-primary" id="reg-btn" onclick="doRegistro()">Crear mi cuenta</button>
+
+      <div class="form-switch">
+        ¿Ya tienes cuenta? <a onclick="ir('login','right')">Inicia sesión</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ RECUPERAR CONTRASEÑA ══════════ -->
+  <div class="screen" id="screen-recovery">
+
+    <div class="form-header">
+      <button class="back-btn" onclick="ir('login','right')"><span>←</span> Volver</button>
+      <div class="form-header-badge"><span>📧 Recuperar acceso</span></div>
+      <div class="form-title">Recupera tu <em>contraseña</em></div>
+      <div class="form-subtitle">Te enviaremos un enlace de recuperación a tu correo registrado.</div>
+    </div>
+
+    <div class="form-card">
+
+      <div class="alert success" id="rec-alert">
+        <span>✅</span><span>Enlace enviado. Revisa tu bandeja de entrada.</span>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Correo electrónico</span></div>
+        <div class="field-wrap">
+          <span class="field-icon">✉️</span>
+          <input type="email" class="field-input" id="rec-email"
+            placeholder="tu@correo.com" inputmode="email">
+        </div>
+        <div class="field-error" id="rec-email-err">Ingresa un correo válido.</div>
+      </div>
+
+      <button class="btn-primary" id="rec-btn" onclick="doRecovery()">Enviar enlace de recuperación</button>
+
+      <div class="form-switch" style="margin-top:1.2rem;">
+        <a onclick="ir('login','right')">← Volver al inicio de sesión</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ÉXITO ══════════ -->
+  <div class="screen" id="screen-exito">
+    <div class="exito-icon">✅</div>
+    <div class="exito-title">¡Cuenta creada!</div>
+    <div class="exito-sub">Tu acceso a la plataforma JC Fiscal está listo. Bienvenido.</div>
+    <button class="btn-primary" style="max-width:280px;" onclick="entrarApp()">
+      Entrar a la app →
+    </button>
+  </div>
+
+</div><!-- /app -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── Navegación con animación
+  function ir(destino, direccion) {
+    const screens = document.querySelectorAll('.screen');
+    screens.forEach(s => s.classList.remove('active','slide-left','slide-right'));
+    const target = document.getElementById('screen-' + destino);
+    target.classList.add('active', direccion === 'left' ? 'slide-left' : 'slide-right');
+    document.getElementById('app').scrollTop = 0;
+  }
+
+  // ── Toast
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // ── Toggle contraseña visible/oculta
+  function togglePass(inputId, btn) {
+    const inp = document.getElementById(inputId);
+    const visible = inp.type === 'text';
+    inp.type = visible ? 'password' : 'text';
+    btn.textContent = visible ? '👁' : '🙈';
+    btn.style.opacity = visible ? '0.4' : '0.8';
+  }
+
+  // ── Fuerza de contraseña
+  function checkStrength(val) {
+    const wrap = document.getElementById('pass-strength');
+    const fill = document.getElementById('strength-fill');
+    const label = document.getElementById('strength-label');
+    if (!val) { wrap.classList.remove('visible'); return; }
+    wrap.classList.add('visible');
+
+    let score = 0;
+    if (val.length >= 8)  score++;
+    if (val.length >= 12) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    const configs = [
+      { w:'20%', c:'#fc8181', t:'Muy débil' },
+      { w:'40%', c:'#fc8181', t:'Débil' },
+      { w:'60%', c:'#f6e05e', t:'Regular' },
+      { w:'80%', c:'#68d391', t:'Fuerte' },
+      { w:'100%', c:'#38a169', t:'Muy fuerte' },
+    ];
+    const cfg = configs[Math.min(score, 4)];
+    fill.style.width = cfg.w;
+    fill.style.background = cfg.c;
+    label.textContent = cfg.t;
+    label.style.color = cfg.c;
+  }
+
+  // ── Validación helper
+  function validEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+  function setErr(id, msg, show) {
+    const el = document.getElementById(id);
+    const inp = el ? el.previousElementSibling?.querySelector('input') || document.getElementById(id.replace('-err','')) : null;
+    el.textContent = msg || el.textContent;
+    el.classList.toggle('visible', show);
+    if (inp) inp.classList.toggle('error', show);
+  }
+
+  // ── LOGIN
+  function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pass  = document.getElementById('login-pass').value;
+    let ok = true;
+
+    setErr('login-email-err', null, !validEmail(email)); if (!validEmail(email)) ok = false;
+    setErr('login-pass-err', null, pass.length < 6); if (pass.length < 6) ok = false;
+
+    if (!ok) return;
+
+    const btn = document.getElementById('login-btn');
+    btn.classList.add('loading');
+    btn.textContent = 'Verificando';
+
+    // Simulación de autenticación (aquí conectarías tu backend real)
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      btn.textContent = 'Entrar a mi cuenta';
+
+      // Demo: cualquier correo válido con pass de 6+ char entra
+      // En producción, reemplaza con tu API de autenticación
+      if (email && pass.length >= 6) {
+        showToast('✓ Sesión iniciada correctamente');
+        setTimeout(() => {
+          // Redirige a la app
+          window.location.href = 'app.html';
+        }, 800);
+      } else {
+        const alert = document.getElementById('login-alert');
+        document.getElementById('login-alert-msg').textContent = 'Credenciales incorrectas. Intenta de nuevo.';
+        alert.classList.add('visible');
+        setTimeout(() => alert.classList.remove('visible'), 4000);
+      }
+    }, 1800);
+  }
+
+  // ── DEMO login rápido
+  function loginDemo() {
+    document.getElementById('login-email').value = 'demo@jcfiscal.com';
+    document.getElementById('login-pass').value = 'demo2026';
+    showToast('Demo cargado — presiona Entrar');
+  }
+
+  // ── REGISTRO
+  function doRegistro() {
+    const nombre = document.getElementById('reg-nombre').value.trim();
+    const email  = document.getElementById('reg-email').value.trim();
+    const pass   = document.getElementById('reg-pass').value;
+    const pass2  = document.getElementById('reg-pass2').value;
+    const terms  = document.getElementById('reg-terms').checked;
+    let ok = true;
+
+    setErr('reg-nombre-err', null, nombre.length < 3); if (nombre.length < 3) ok = false;
+    setErr('reg-email-err', null, !validEmail(email)); if (!validEmail(email)) ok = false;
+    setErr('reg-pass-err', 'Mínimo 8 caracteres.', pass.length < 8); if (pass.length < 8) ok = false;
+    setErr('reg-pass2-err', 'Las contraseñas no coinciden.', pass !== pass2); if (pass !== pass2) ok = false;
+
+    if (!terms) {
+      showToast('⚠️ Acepta los términos para continuar');
+      ok = false;
+    }
+
+    if (!ok) return;
+
+    const btn = document.getElementById('reg-btn');
+    btn.classList.add('loading');
+    btn.textContent = 'Creando cuenta';
+
+    // Simulación de registro
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      btn.textContent = 'Crear mi cuenta';
+      ir('exito', 'left');
+    }, 2000);
+  }
+
+  // ── RECUPERAR CONTRASEÑA
+  function doRecovery() {
+    const email = document.getElementById('rec-email').value.trim();
+    setErr('rec-email-err', null, !validEmail(email));
+    if (!validEmail(email)) return;
+
+    const btn = document.getElementById('rec-btn');
+    btn.classList.add('loading');
+    btn.textContent = 'Enviando';
+
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      btn.textContent = 'Enviar enlace de recuperación';
+      document.getElementById('rec-alert').classList.add('visible');
+    }, 1800);
+  }
+
+  // ── ENTRAR A LA APP
+  function entrarApp() {
+    window.location.href = 'app.html';
+  }
+
+  // ── Enter en campos
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const active = document.querySelector('.screen.active');
+    if (!active) return;
+    const id = active.id;
+    if (id === 'screen-login')    doLogin();
+    if (id === 'screen-registro') doRegistro();
+    if (id === 'screen-recovery') doRecovery();
+  });
+</script>
+</body>
+</html>
