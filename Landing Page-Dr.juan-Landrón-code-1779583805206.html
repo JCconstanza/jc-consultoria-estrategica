@@ -254,53 +254,56 @@
                 <h2 class="titulo" style="text-align: center; margin-bottom: 20px;">Solicita tu evaluación médica</h2>
                 <p style="text-align: center; margin-bottom: 30px;">Completa los datos y nuestro sistema priorizará tu solicitud automáticamente.</p>
                 
-                <form id="<form action="[https://formspree.io/f/xvzyqlbl](https://formspree.io/drjflandronn@gmail.com/constanzasoluciones@gmail.com)" method="POST">">
-                    <div style="display: flex; gap: 20px;">
-                        <div class="form-group" style="flex: 1;">
-                            <input type="text" class="form-control" placeholder="Nombre completo" required>
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <input type="number" class="form-control" placeholder="Edad" required>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; gap: 20px;">
-                        <div class="form-group" style="flex: 1;">
-                            <input type="tel" class="form-control" placeholder="Teléfono / WhatsApp" required>
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <input type="email" class="form-control" placeholder="Correo electrónico" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <textarea class="form-control" rows="3" placeholder="Motivo de consulta (Breve descripción)" required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <h4 style="margin-bottom: 10px;">Nivel de Urgencia</h4>
-                        <div class="urgency-selector">
-                            <label class="urgency-label red" onclick="selectUrgency(this, 'emergencia')">
-                                <input type="radio" name="urgency" value="Emergencia">
-                                🔴 Emergencia
-                            </label>
-                            <label class="urgency-label yellow" onclick="selectUrgency(this, 'prioritario')">
-                                <input type="radio" name="urgency" value="Prioritario">
-                                🟡 Prioritario
-                            </label>
-                            <label class="urgency-label green selected" onclick="selectUrgency(this, 'regular')">
-                                <input type="radio" name="urgency" value="Regular" checked>
-                                🟢 Consulta Regular
-                            </label>
-                        </div>
-                        <p id="urgency-message" style="font-size: 0.85rem; margin-top: 10px; color: var(--azul-electrico); font-weight: 500; text-align: center;">🟢 Agenda automática. Nos pondremos en contacto pronto.</p>
-                    </div>
-
-                    <button type="button" id="submitBtn" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 18px;">AGENDAR MI EVALUACIÓN</button>
-                </form>
-            </div>
+                <form id="appointmentForm" action="https://formspree.io/f/xvzyqlbl" method="POST">
+    <div style="display: flex; gap: 20px;">
+        <div class="form-group" style="flex: 1;">
+            <!-- Agregado name="Nombre" -->
+            <input type="text" name="Nombre" class="form-control" placeholder="Nombre completo" required>
         </div>
-    </section>
+        <div class="form-group" style="flex: 1;">
+            <!-- Agregado name="Edad" -->
+            <input type="number" name="Edad" class="form-control" placeholder="Edad" required>
+        </div>
+    </div>
+    
+    <div style="display: flex; gap: 20px;">
+        <div class="form-group" style="flex: 1;">
+            <!-- Agregado name="Telefono" -->
+            <input type="tel" name="Telefono" class="form-control" placeholder="Teléfono / WhatsApp" required>
+        </div>
+        <div class="form-group" style="flex: 1;">
+            <!-- Agregado name="Correo" -->
+            <input type="email" name="Correo" class="form-control" placeholder="Correo electrónico" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <!-- Agregado name="Motivo" -->
+        <textarea name="Motivo" class="form-control" rows="3" placeholder="Motivo de consulta (Breve descripción)" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <h4 style="margin-bottom: 10px;">Nivel de Urgencia</h4>
+        <div class="urgency-selector">
+            <label class="urgency-label red" onclick="selectUrgency(this, 'emergencia')">
+                <input type="radio" name="Urgencia" value="Emergencia">
+                🔴 Emergencia
+            </label>
+            <label class="urgency-label yellow" onclick="selectUrgency(this, 'prioritario')">
+                <input type="radio" name="Urgencia" value="Prioritario">
+                🟡 Prioritario
+            </label>
+            <label class="urgency-label green selected" onclick="selectUrgency(this, 'regular')">
+                <input type="radio" name="Urgencia" value="Regular" checked>
+                🟢 Consulta Regular
+            </label>
+        </div>
+        <p id="urgency-message" style="font-size: 0.85rem; margin-top: 10px; color: var(--azul-electrico); font-weight: 500; text-align: center;">🟢 Agenda automática. Nos pondremos en contacto pronto.</p>
+    </div>
+
+    <!-- Cambiado type="submit" por defecto -->
+    <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 18px;">AGENDAR MI EVALUACIÓN</button>
+</form>
 
     <!-- FAQ -->
     <section class="container">
