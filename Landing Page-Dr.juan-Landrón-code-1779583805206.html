@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Juan Felipe Landrón | Ortopeda y Cirujano de Columna</title>
+    <meta name="description" content="Especialista en ortopedia, cirugía de columna, artroscopia y medicina deportiva. Atención de emergencias 24/7. ¡Agenda tu cita hoy!">
+    
+    <!-- Tipografías de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Schema Médico (SEO Local) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Physician",
+      "name": "Dr. Juan Felipe Landrón",
+      "medicalSpecialty": ["Orthopedic", "SpineSurgery", "SportsMedicine"],
+      "telephone": "849-226-2318",
+      "email": "drjflandronn@gmail.com",
+      "url": "https://www.drjuanfelipelandron.com"
+    }
+    </script>
+
+    <!-- Meta Pixel Code (Placeholder) -->
+    <!-- Google Analytics 4 Code (Placeholder) -->
+
+    <style>
+        /* --- VARIABLES DE MARCA --- */
+        :root {
+            --azul-abisal: #0A1F44;
+            --gris-titanio: #4A4A4A;
+            --blanco-clinico: #F9F9F9;
+            --azul-electrico: #0056B3;
+            --rojo-emergencia: #E63946;
+            --blanco-puro: #FFFFFF;
+            
+            --font-titulos: 'Montserrat', sans-serif;
+            --font-subtitulos: 'Poppins', sans-serif;
+            --font-texto: 'Inter', sans-serif;
+        }
+
+        /* --- ESTILOS GENERALES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-texto); color: var(--gris-titanio); background-color: var(--blanco-clinico); line-height: 1.6; }
+        h1, h2, .titulo { font-family: var(--font-titulos); color: var(--azul-abisal); }
+        h3, h4, .subtitulo { font-family: var(--font-subtitulos); color: var(--azul-abisal); }
+        a { text-decoration: none; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 60px 0; }
+        
+        /* --- BOTONES --- */
+        .btn { display: inline-block; padding: 15px 30px; border-radius: 8px; font-family: var(--font-subtitulos); font-size: 16px; cursor: pointer; transition: 0.3s; border: none; text-align: center; }
+        .btn-primary { background-color: var(--azul-electrico); color: var(--blanco-puro); }
+        .btn-primary:hover { background-color: #004494; transform: translateY(-2px); }
+        .btn-secondary { background-color: transparent; color: var(--azul-electrico); border: 2px solid var(--azul-electrico); }
+        .btn-secondary:hover { background-color: rgba(0, 86, 179, 0.1); }
+        .btn-emergency { background-color: var(--rojo-emergencia); color: var(--blanco-puro); animation: pulse 2s infinite; }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(230, 57, 70, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
+        }
+
+        /* --- BOTONES FLOTANTES --- */
+        .floating-whatsapp { position: fixed; bottom: 20px; right: 20px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000; transition: 0.3s; }
+        .floating-whatsapp:hover { transform: scale(1.1); }
+        
+        .floating-emergency { position: fixed; bottom: 90px; right: 20px; background-color: var(--rojo-emergencia); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000; animation: pulse 2s infinite; }
+
+        /* --- HERO SECTION --- */
+        .hero { background: linear-gradient(rgba(10, 31, 68, 0.85), rgba(10, 31, 68, 0.95)), url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=1920&q=80') center/cover; color: var(--blanco-puro); padding: 100px 0; text-align: center; }
+        .hero h1 { color: var(--blanco-puro); font-size: 2.8rem; margin-bottom: 20px; }
+        .hero p.sub { font-family: var(--font-subtitulos); font-size: 1.2rem; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .hero-stars { color: #FFD700; margin-bottom: 15px; font-size: 1.2rem; }
+        .hero-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px; }
+
+        /* --- SERVICIOS --- */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+        .service-card { background: var(--blanco-puro); padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); text-align: center; border-bottom: 4px solid var(--azul-electrico); transition: 0.3s; }
+        .service-card:hover { transform: translateY(-5px); }
+        .service-icon { font-size: 40px; color: var(--azul-electrico); margin-bottom: 15px; }
+        .service-card h3 { margin-bottom: 10px; font-size: 1.2rem; }
+        .service-card p { font-size: 0.95rem; margin-bottom: 15px; }
+        .time-badge { background: var(--blanco-clinico); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; color: var(--gris-titanio); display: inline-block; margin-bottom: 15px;}
+
+        /* --- DIFERENCIADORES --- */
+        .differentiators { background-color: var(--blanco-puro); }
+        .diff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
+        .diff-item { display: flex; align-items: center; gap: 15px; }
+        .diff-item i { color: var(--azul-electrico); font-size: 24px; }
+
+        /* --- LEAD MAGNET --- */
+        .lead-magnet { background-color: var(--azul-abisal); color: white; border-radius: 12px; padding: 40px; text-align: center; margin: 40px 0; }
+        .lead-magnet h2 { color: white; margin-bottom: 15px; }
+
+        /* --- FORMULARIO INTELIGENTE --- */
+        .form-section { background-color: var(--blanco-clinico); }
+        .smart-form { background: var(--blanco-puro); padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); max-width: 700px; margin: 0 auto; }
+        .form-group { margin-bottom: 20px; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-family: var(--font-texto); }
+        .urgency-selector { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+        .urgency-label { flex: 1; text-align: center; padding: 10px; border-radius: 6px; cursor: pointer; border: 2px solid transparent; font-family: var(--font-subtitulos); font-size: 0.9rem;}
+        .urgency-label input { display: none; }
+        
+        .urgency-label.red { background-color: rgba(230, 57, 70, 0.1); color: var(--rojo-emergencia); }
+        .urgency-label.yellow { background-color: rgba(255, 193, 7, 0.1); color: #d39e00; }
+        .urgency-label.green { background-color: rgba(40, 167, 69, 0.1); color: #28a745; }
+        
+        .urgency-label.red.selected { border-color: var(--rojo-emergencia); background-color: var(--rojo-emergencia); color: white; }
+        .urgency-label.yellow.selected { border-color: #d39e00; background-color: #ffc107; color: black; }
+        .urgency-label.green.selected { border-color: #28a745; background-color: #28a745; color: white; }
+
+        /* --- TESTIMONIOS & FAQ --- */
+        .faq-item { background: var(--blanco-puro); margin-bottom: 10px; padding: 20px; border-radius: 8px; border-left: 4px solid var(--azul-abisal); }
+        .faq-item h4 { margin-bottom: 5px; }
+
+        /* --- FOOTER --- */
+        footer { background-color: var(--azul-abisal); color: var(--blanco-clinico); padding: 50px 0 20px; text-align: center; }
+        footer h3 { color: var(--blanco-puro); margin-bottom: 20px; }
+        .footer-links a { color: #ccc; margin: 0 10px; transition: 0.3s; }
+        .footer-links a:hover { color: var(--blanco-puro); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero-buttons { flex-direction: column; }
+            .urgency-selector { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BOTONES FLOTANTES -->
+    <a href="https://wa.me/18492262318?text=Hola,%20necesito%20una%20emergencia%20médica" class="floating-emergency" target="_blank" title="Emergencia 24/7">
+        <i class="fas fa-ambulance"></i>
+    </a>
+    <a href="https://wa.me/18492262318?text=Hola,%20quiero%20agendar%20una%20consulta" class="floating-whatsapp" target="_blank" title="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-stars">
+                ★★★★★ <span style="font-family: var(--font-texto); font-size: 1rem;">Atención Especializada</span>
+            </div>
+            <h1>Recupera tu movimiento con atención especializada.</h1>
+            <p class="sub">Diagnóstico, tratamiento y cirugía especializada en columna, lesiones articulares y traumatología con atención personalizada.</p>
+            <h3>DR. JUAN FELIPE LANDRÓN</h3>
+            <p>Ortopeda | Cirujano de Columna | Artroscopia | Medicina Deportiva</p>
+            
+            <div class="hero-buttons">
+                <a href="#agendar" class="btn btn-primary"><i class="fas fa-calendar-check"></i> 🔵 AGENDAR CONSULTA</a>
+                <a href="tel:8492262318" class="btn btn-emergency"><i class="fas fa-bolt"></i> ⚡ EMERGENCIA 24/7</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIOS -->
+    <section class="container" id="servicios">
+        <h2 class="titulo" style="text-align: center;">Áreas de Especialidad</h2>
+        <div class="services-grid">
+            
+            <div class="service-card">
+                <i class="fas fa-bone service-icon"></i>
+                <h3>Enfermedades de la Columna</h3>
+                <p>Diagnóstico y tratamiento para hernias, escoliosis y dolor crónico.</p>
+                <span class="time-badge"><i class="far fa-clock"></i> Eval: 40 min</span>
+                <br>
+                <a href="#agendar" class="btn btn-secondary" style="padding: 8px 15px; font-size: 14px;">Solicitar Cita</a>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-crutch service-icon"></i>
+                <h3>Fracturas y Traumatología</h3>
+                <p>Atención integral para fracturas óseas, esguinces y luxaciones.</p>
+                <span class="time-badge"><i class="far fa-clock"></i> Eval: Prioritaria</span>
+                <br>
+                <a href="#agendar" class="btn btn-secondary" style="padding: 8px 15px; font-size: 14px;">Solicitar Cita</a>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-child service-icon"></i>
+                <h3>Ortopedia Infantil</h3>
+                <p>Cuidado especializado para el desarrollo óseo y articular de los niños.</p>
+                <span class="time-badge"><i class="far fa-clock"></i> Eval: 45 min</span>
+                <br>
+                <a href="#agendar" class="btn btn-secondary" style="padding: 8px 15px; font-size: 14px;">Solicitar Cita</a>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-running service-icon"></i>
+                <h3>Medicina Deportiva</h3>
+                <p>Tratamiento de lesiones en hombros, rodillas y articulaciones para atletas.</p>
+                <span class="time-badge"><i class="far fa-clock"></i> Eval: 40 min</span>
+                <br>
+                <a href="#agendar" class="btn btn-secondary" style="padding: 8px 15px; font-size: 14px;">Solicitar Cita</a>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-microscope service-icon"></i>
+                <h3>Cirugía Mínimamente Invasiva</h3>
+                <p>Artroscopia de hombro, rodilla, codo, tobillo y columna vertebral.</p>
+                <span class="time-badge"><i class="far fa-clock"></i> Alta tecnología</span>
+                <br>
+                <a href="#agendar" class="btn btn-secondary" style="padding: 8px 15px; font-size: 14px;">Evaluar Caso</a>
+            </div>
+
+            <div class="service-card" style="border-color: var(--rojo-emergencia);">
+                <i class="fas fa-ambulance service-icon" style="color: var(--rojo-emergencia);"></i>
+                <h3 style="color: var(--rojo-emergencia);">Emergencias Traumatológicas</h3>
+                <p>Fracturas · Esguinces · Traumas. Atención inmediata 24/7.</p>
+                <span class="time-badge" style="background: rgba(230,57,70,0.1); color: var(--rojo-emergencia);">Inmediato</span>
+                <br>
+                <a href="tel:8492262318" class="btn btn-emergency" style="padding: 8px 15px; font-size: 14px;">Llamar Ahora</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- DIFERENCIADORES -->
+    <section class="differentiators">
+        <div class="container">
+            <h2 class="titulo" style="text-align: center;">¿Por qué elegir al Dr. Juan Felipe Landrón?</h2>
+            <div class="diff-grid">
+                <div class="diff-item"><i class="fas fa-check-circle"></i> <span>Atención súper especializada</span></div>
+                <div class="diff-item"><i class="fas fa-laptop-medical"></i> <span>Tecnología avanzada y precisión</span></div>
+                <div class="diff-item"><i class="fas fa-band-aid"></i> <span>Tratamientos mínimamente invasivos</span></div>
+                <div class="diff-item"><i class="fas fa-person-walking"></i> <span>Recuperación orientada al movimiento</span></div>
+                <div class="diff-item"><i class="fas fa-user-md"></i> <span>Seguimiento cercano y personalizado</span></div>
+                <div class="diff-item"><i class="fas fa-stopwatch"></i> <span>Atención prioritaria y sin demoras</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LEAD MAGNET -->
+    <section class="container">
+        <div class="lead-magnet">
+            <h2>🎁 Descarga Gratis: 7 señales de que debes visitar un ortopeda</h2>
+            <p style="margin-bottom: 20px;">No ignores el dolor. Aprende a identificar cuándo tus articulaciones necesitan ayuda profesional.</p>
+            <button class="btn btn-primary" style="background-color: var(--blanco-puro); color: var(--azul-abisal);">Descargar Guía Ahora</button>
+        </div>
+    </section>
+
+    <!-- FORMULARIO INTELIGENTE -->
+    <section class="form-section" id="agendar">
+        <div class="container">
+            <div class="smart-form">
+                <h2 class="titulo" style="text-align: center; margin-bottom: 20px;">Solicita tu evaluación médica</h2>
+                <p style="text-align: center; margin-bottom: 30px;">Completa los datos y nuestro sistema priorizará tu solicitud automáticamente.</p>
+                
+                <form id="appointmentForm">
+                    <div style="display: flex; gap: 20px;">
+                        <div class="form-group" style="flex: 1;">
+                            <input type="text" class="form-control" placeholder="Nombre completo" required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <input type="number" class="form-control" placeholder="Edad" required>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 20px;">
+                        <div class="form-group" style="flex: 1;">
+                            <input type="tel" class="form-control" placeholder="Teléfono / WhatsApp" required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <input type="email" class="form-control" placeholder="Correo electrónico" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3" placeholder="Motivo de consulta (Breve descripción)" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <h4 style="margin-bottom: 10px;">Nivel de Urgencia</h4>
+                        <div class="urgency-selector">
+                            <label class="urgency-label red" onclick="selectUrgency(this, 'emergencia')">
+                                <input type="radio" name="urgency" value="Emergencia">
+                                🔴 Emergencia
+                            </label>
+                            <label class="urgency-label yellow" onclick="selectUrgency(this, 'prioritario')">
+                                <input type="radio" name="urgency" value="Prioritario">
+                                🟡 Prioritario
+                            </label>
+                            <label class="urgency-label green selected" onclick="selectUrgency(this, 'regular')">
+                                <input type="radio" name="urgency" value="Regular" checked>
+                                🟢 Consulta Regular
+                            </label>
+                        </div>
+                        <p id="urgency-message" style="font-size: 0.85rem; margin-top: 10px; color: var(--azul-electrico); font-weight: 500; text-align: center;">🟢 Agenda automática. Nos pondremos en contacto pronto.</p>
+                    </div>
+
+                    <button type="button" id="submitBtn" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 18px;">AGENDAR MI EVALUACIÓN</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="container">
+        <h2 class="titulo" style="text-align: center; margin-bottom: 30px;">Preguntas Frecuentes</h2>
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div class="faq-item">
+                <h4>¿Necesito cirugía para mi dolor de columna?</h4>
+                <p>No necesariamente. Evaluamos cada caso mediante diagnóstico por imagen. Muchos pacientes mejoran con terapias conservadoras, reservando la cirugía (mínimamente invasiva) solo cuando es estrictamente necesario.</p>
+            </div>
+            <div class="faq-item">
+                <h4>¿Cuándo debo acudir por urgencia ante una caída o fractura?</h4>
+                <p>Si experimentas dolor agudo insoportable, deformidad evidente, incapacidad para mover la extremidad, o hinchazón rápida, debes contactar nuestra línea de Emergencia 24/7 inmediatamente.</p>
+            </div>
+            <div class="faq-item">
+                <h4>¿Atiende a niños y adolescentes?</h4>
+                <p>Sí. Brindamos consulta de ortopedia infantil, evaluando problemas de crecimiento, postura, y lesiones deportivas en jóvenes.</p>
+            </div>
+            <div class="faq-item">
+                <h4>¿Qué es una artroscopia?</h4>
+                <p>Es un procedimiento quirúrgico mínimamente invasivo donde introducimos una pequeña cámara en la articulación (rodilla, hombro). Permite curar lesiones con incisiones milimétricas y recuperación mucho más rápida.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section style="background-color: var(--azul-abisal); color: white; text-align: center; padding: 80px 20px;">
+        <h2 class="titulo" style="color: white; font-size: 2.5rem; margin-bottom: 30px;">Tu movilidad merece atención especializada.</h2>
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            <a href="#agendar" class="btn btn-primary" style="background-color: var(--blanco-puro); color: var(--azul-abisal);">AGENDAR CONSULTA</a>
+            <a href="tel:8492262318" class="btn btn-emergency">CONTACTAR EMERGENCIA</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container" style="padding: 20px 0;">
+            <h3>Dr. Juan Felipe Landrón</h3>
+            <p style="margin-bottom: 20px;">Ortopedia · Cirugía de Columna · Artroscopia</p>
+            
+            <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; flex-wrap: wrap;">
+                <div><i class="fas fa-phone"></i> 849-226-2318</div>
+                <div><i class="fas fa-envelope"></i> drjflandronn@gmail.com</div>
+                <div><i class="fab fa-instagram"></i> @jlortopeda</div>
+            </div>
+
+            <div class="footer-links">
+                <a href="#">Política de Privacidad</a> | 
+                <a href="#">Aviso Médico Legal</a> | 
+                <a href="#">Mapa de Ubicación</a>
+            </div>
+            <p style="margin-top: 30px; font-size: 0.8rem; color: #888;">© 2026 Dr. Juan Felipe Landrón. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- LÓGICA DEL FORMULARIO INTELIGENTE -->
+    <script>
+        function selectUrgency(element, type) {
+            // Remover 'selected' de todos
+            document.querySelectorAll('.urgency-label').forEach(el => el.classList.remove('selected'));
+            // Añadir 'selected' al actual
+            element.classList.add('selected');
+            
+            const messageEl = document.getElementById('urgency-message');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (type === 'emergencia') {
+                messageEl.innerHTML = "🔴 Redirección inmediata a nuestro equipo de trauma vía WhatsApp.";
+                messageEl.style.color = "var(--rojo-emergencia)";
+                submitBtn.innerHTML = "<i class='fab fa-whatsapp'></i> HABLAR CON URGENCIAS AHORA";
+                submitBtn.className = "btn btn-emergency";
+                submitBtn.style.width = "100%";
+                submitBtn.onclick = function() { window.open("https://wa.me/18492262318?text=EMERGENCIA:%20Necesito%20atención%20inmediata", "_blank"); };
+            } else if (type === 'prioritario') {
+                messageEl.innerHTML = "🟡 Atención en menos de 2 horas. Serás contactado a la brevedad.";
+                messageEl.style.color = "#d39e00";
+                submitBtn.innerHTML = "SOLICITAR ATENCIÓN PRIORITARIA";
+                submitBtn.className = "btn btn-primary";
+                submitBtn.style.backgroundColor = "#ffc107";
+                submitBtn.style.color = "black";
+                submitBtn.onclick = function() { alert("Solicitud enviada a la cola prioritaria."); };
+            } else {
+                messageEl.innerHTML = "🟢 Agenda automática. Nos pondremos en contacto pronto.";
+                messageEl.style.color = "#28a745";
+                submitBtn.innerHTML = "AGENDAR MI EVALUACIÓN";
+                submitBtn.className = "btn btn-primary";
+                submitBtn.style.backgroundColor = "var(--azul-electrico)";
+                submitBtn.style.color = "white";
+                submitBtn.onclick = function() { alert("Solicitud regular enviada exitosamente."); };
+            }
+        }
+    </script>
+
+</body>
+</html>
