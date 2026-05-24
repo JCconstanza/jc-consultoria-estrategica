@@ -6,15 +6,12 @@
     <title>Dr. Juan Felipe Landrón | Ortopeda y Cirujano de Columna</title>
     <meta name="description" content="Especialista en ortopedia, cirugía de columna, artroscopia y medicina deportiva. Atención de emergencias 24/7. ¡Agenda tu cita hoy!">
     
-    <!-- Tipografías de Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
     
-    <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Schema Médico (SEO Local) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -26,9 +23,6 @@
       "url": "https://drjuanfelipelandron.netlify.app"
     }
     </script>
-
-    <!-- Meta Pixel Code (Placeholder) -->
-    <!-- Google Analytics 4 Code (Placeholder) -->
 
     <style>
         /* --- VARIABLES DE MARCA --- */
@@ -135,7 +129,6 @@
 </head>
 <body>
 
-    <!-- BOTONES FLOTANTES -->
     <a href="https://wa.me/18492262318?text=Hola,%20necesito%20una%20emergencia%20médica" class="floating-emergency" target="_blank" title="Emergencia 24/7">
         <i class="fas fa-ambulance"></i>
     </a>
@@ -143,7 +136,6 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- HERO SECTION -->
     <section class="hero">
         <div class="container">
             <div class="hero-stars">
@@ -161,7 +153,6 @@
         </div>
     </section>
 
-    <!-- SERVICIOS -->
     <section class="container" id="servicios">
         <h2 class="titulo" style="text-align: center;">Áreas de Especialidad</h2>
         <div class="services-grid">
@@ -223,7 +214,6 @@
         </div>
     </section>
 
-    <!-- DIFERENCIADORES -->
     <section class="differentiators">
         <div class="container">
             <h2 class="titulo" style="text-align: center;">¿Por qué elegir al Dr. Juan Felipe Landrón?</h2>
@@ -238,7 +228,6 @@
         </div>
     </section>
 
-    <!-- LEAD MAGNET -->
     <section class="container">
         <div class="lead-magnet">
             <h2>🎁 Descarga Gratis: 7 señales de que debes visitar un ortopeda</h2>
@@ -247,7 +236,6 @@
         </div>
     </section>
 
-    <!-- FORMULARIO INTELIGENTE -->
     <section class="form-section" id="agendar">
         <div class="container">
             <div class="smart-form">
@@ -255,57 +243,53 @@
                 <p style="text-align: center; margin-bottom: 30px;">Completa los datos y nuestro sistema priorizará tu solicitud automáticamente.</p>
                 
                 <form id="appointmentForm" action="https://formspree.io/f/xvzyqlbl" method="POST">
-    <div style="display: flex; gap: 20px;">
-        <div class="form-group" style="flex: 1;">
-            <!-- Agregado name="Nombre" -->
-            <input type="text" name="Nombre" class="form-control" placeholder="Nombre completo" required>
-        </div>
-        <div class="form-group" style="flex: 1;">
-            <!-- Agregado name="Edad" -->
-            <input type="number" name="Edad" class="form-control" placeholder="Edad" required>
-        </div>
-    </div>
-    
-    <div style="display: flex; gap: 20px;">
-        <div class="form-group" style="flex: 1;">
-            <!-- Agregado name="Telefono" -->
-            <input type="tel" name="Telefono" class="form-control" placeholder="Teléfono / WhatsApp" required>
-        </div>
-        <div class="form-group" style="flex: 1;">
-            <!-- Agregado name="Correo" -->
-            <input type="email" name="Correo" class="form-control" placeholder="Correo electrónico" required>
-        </div>
-    </div>
+                    <div style="display: flex; gap: 20px;">
+                        <div class="form-group" style="flex: 1;">
+                            <input type="text" name="Nombre" class="form-control" placeholder="Nombre completo" required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <input type="number" name="Edad" class="form-control" placeholder="Edad" required>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 20px;">
+                        <div class="form-group" style="flex: 1;">
+                            <input type="tel" name="Telefono" class="form-control" placeholder="Teléfono / WhatsApp" required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <input type="email" name="Correo" class="form-control" placeholder="Correo electrónico" required>
+                        </div>
+                    </div>
 
-    <div class="form-group">
-        <!-- Agregado name="Motivo" -->
-        <textarea name="Motivo" class="form-control" rows="3" placeholder="Motivo de consulta (Breve descripción)" required></textarea>
-    </div>
+                    <div class="form-group">
+                        <textarea name="Motivo" class="form-control" rows="3" placeholder="Motivo de consulta (Breve descripción)" required></textarea>
+                    </div>
 
-    <div class="form-group">
-        <h4 style="margin-bottom: 10px;">Nivel de Urgencia</h4>
-        <div class="urgency-selector">
-            <label class="urgency-label red" onclick="selectUrgency(this, 'emergencia')">
-                <input type="radio" name="Urgencia" value="Emergencia">
-                🔴 Emergencia
-            </label>
-            <label class="urgency-label yellow" onclick="selectUrgency(this, 'prioritario')">
-                <input type="radio" name="Urgencia" value="Prioritario">
-                🟡 Prioritario
-            </label>
-            <label class="urgency-label green selected" onclick="selectUrgency(this, 'regular')">
-                <input type="radio" name="Urgencia" value="Regular" checked>
-                🟢 Consulta Regular
-            </label>
+                    <div class="form-group">
+                        <h4 style="margin-bottom: 10px;">Nivel de Urgencia</h4>
+                        <div class="urgency-selector">
+                            <label class="urgency-label red" onclick="selectUrgency(this, 'emergencia')">
+                                <input type="radio" name="Urgencia" value="Emergencia">
+                                🔴 Emergencia
+                            </label>
+                            <label class="urgency-label yellow" onclick="selectUrgency(this, 'prioritario')">
+                                <input type="radio" name="Urgencia" value="Prioritario">
+                                🟡 Prioritario
+                            </label>
+                            <label class="urgency-label green selected" onclick="selectUrgency(this, 'regular')">
+                                <input type="radio" name="Urgencia" value="Regular" checked>
+                                🟢 Consulta Regular
+                            </label>
+                        </div>
+                        <p id="urgency-message" style="font-size: 0.85rem; margin-top: 10px; color: var(--azul-electrico); font-weight: 500; text-align: center;">🟢 Agenda automática. Nos pondremos en contacto pronto.</p>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 18px;">AGENDAR MI EVALUACIÓN</button>
+                </form>
+            </div>
         </div>
-        <p id="urgency-message" style="font-size: 0.85rem; margin-top: 10px; color: var(--azul-electrico); font-weight: 500; text-align: center;">🟢 Agenda automática. Nos pondremos en contacto pronto.</p>
-    </div>
+    </section>
 
-    <!-- Cambiado type="submit" por defecto -->
-    <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 18px;">AGENDAR MI EVALUACIÓN</button>
-</form>
-
-    <!-- FAQ -->
     <section class="container">
         <h2 class="titulo" style="text-align: center; margin-bottom: 30px;">Preguntas Frecuentes</h2>
         <div style="max-width: 800px; margin: 0 auto;">
@@ -328,7 +312,6 @@
         </div>
     </section>
 
-    <!-- CTA FINAL -->
     <section style="background-color: var(--azul-abisal); color: white; text-align: center; padding: 80px 20px;">
         <h2 class="titulo" style="color: white; font-size: 2.5rem; margin-bottom: 30px;">Tu movilidad merece atención especializada.</h2>
         <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
@@ -337,7 +320,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <div class="container" style="padding: 20px 0;">
             <h3>Dr. Juan Felipe Landrón de la Rosa</h3>
@@ -359,12 +341,9 @@
         </div>
     </footer>
 
-    <!-- LÓGICA DEL FORMULARIO INTELIGENTE -->
     <script>
         function selectUrgency(element, type) {
-            // Remover 'selected' de todos
             document.querySelectorAll('.urgency-label').forEach(el => el.classList.remove('selected'));
-            // Añadir 'selected' al actual
             element.classList.add('selected');
             
             const messageEl = document.getElementById('urgency-message');
@@ -375,7 +354,7 @@
                 messageEl.style.color = "var(--rojo-emergencia)";
                 submitBtn.innerHTML = "<i class='fab fa-whatsapp'></i> HABLAR CON URGENCIAS AHORA";
                 submitBtn.className = "btn btn-emergency";
-                submitBtn.style.width = "100%";
+                submitBtn.type = "button"; 
                 submitBtn.onclick = function() { window.open("https://wa.me/18492262318?text=EMERGENCIA:%20Necesito%20atención%20inmediata", "_blank"); };
             } else if (type === 'prioritario') {
                 messageEl.innerHTML = "🟡 Atención en menos de 2 horas. Serás contactado a la brevedad.";
@@ -384,7 +363,8 @@
                 submitBtn.className = "btn btn-primary";
                 submitBtn.style.backgroundColor = "#ffc107";
                 submitBtn.style.color = "black";
-                submitBtn.onclick = function() { alert("Solicitud enviada a la cola prioritaria."); };
+                submitBtn.type = "submit"; 
+                submitBtn.onclick = null; 
             } else {
                 messageEl.innerHTML = "🟢 Agenda automática. Nos pondremos en contacto pronto.";
                 messageEl.style.color = "#28a745";
@@ -392,7 +372,8 @@
                 submitBtn.className = "btn btn-primary";
                 submitBtn.style.backgroundColor = "var(--azul-electrico)";
                 submitBtn.style.color = "white";
-                submitBtn.onclick = function() { alert("Solicitud regular enviada exitosamente."); };
+                submitBtn.type = "submit"; 
+                submitBtn.onclick = null; 
             }
         }
     </script>
