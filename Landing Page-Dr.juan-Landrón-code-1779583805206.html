@@ -41,12 +41,19 @@
 
         /* --- ESTILOS GENERALES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-texto); color: var(--gris-titanio); background-color: var(--blanco-clinico); line-height: 1.6; }
+        /* Padding-top añadido para compensar el header fijo */
+        body { font-family: var(--font-texto); color: var(--gris-titanio); background-color: var(--blanco-clinico); line-height: 1.6; padding-top: 85px; } 
         h1, h2, .titulo { font-family: var(--font-titulos); color: var(--azul-abisal); }
         h3, h4, .subtitulo { font-family: var(--font-subtitulos); color: var(--azul-abisal); }
         a { text-decoration: none; }
         .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 60px 0; }
         
+        /* --- HEADER FIJO Y LOGO --- */
+        header { position: fixed; top: 0; left: 0; width: 100%; background-color: var(--blanco-puro); box-shadow: 0 4px 20px rgba(0,0,0,0.08); z-index: 2000; height: 85px; display: flex; align-items: center; transition: all 0.3s ease; }
+        .header-container { width: 90%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo-img { height: 65px; width: auto; object-fit: contain; }
+        .header-cta { display: flex; gap: 15px; align-items: center; }
+
         /* --- BOTONES --- */
         .btn { display: inline-block; padding: 15px 30px; border-radius: 8px; font-family: var(--font-subtitulos); font-size: 16px; cursor: pointer; transition: 0.3s; border: none; text-align: center; }
         .btn-primary { background-color: var(--azul-electrico); color: var(--blanco-puro); }
@@ -55,6 +62,8 @@
         .btn-secondary:hover { background-color: rgba(0, 86, 179, 0.1); }
         .btn-emergency { background-color: var(--rojo-emergencia); color: var(--blanco-puro); animation: pulse 2s infinite; }
         
+        .header-cta .btn { padding: 10px 20px; font-size: 14px; } /* Botones más pequeños para el header */
+
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); }
             70% { box-shadow: 0 0 0 15px rgba(230, 57, 70, 0); }
@@ -64,15 +73,29 @@
         /* --- BOTONES FLOTANTES --- */
         .floating-whatsapp { position: fixed; bottom: 20px; right: 20px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000; transition: 0.3s; }
         .floating-whatsapp:hover { transform: scale(1.1); }
-        
         .floating-emergency { position: fixed; bottom: 90px; right: 20px; background-color: var(--rojo-emergencia); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000; animation: pulse 2s infinite; }
 
-        /* --- HERO SECTION --- */
-        .hero { background: linear-gradient(rgba(10, 31, 68, 0.85), rgba(10, 31, 68, 0.95)), url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=1920&q=80') center/cover; color: var(--blanco-puro); padding: 100px 0; text-align: center; }
-        .hero h1 { color: var(--blanco-puro); font-size: 2.8rem; margin-bottom: 20px; }
-        .hero p.sub { font-family: var(--font-subtitulos); font-size: 1.2rem; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; }
-        .hero-stars { color: #FFD700; margin-bottom: 15px; font-size: 1.2rem; }
-        .hero-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px; }
+        /* --- SLIDER HERO DINÁMICO --- */
+        .slider-container { position: relative; width: 100%; height: 80vh; min-height: 500px; overflow: hidden; background-color: var(--azul-abisal); }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease-in-out; background-size: cover; background-position: center; display: flex; align-items: center; }
+        .slide.active { opacity: 1; z-index: 1; }
+        
+        /* Capa oscura para que el texto resalte (Gradiente Premium) */
+        .slide-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(10,31,68,0.95) 0%, rgba(10,31,68,0.6) 60%, rgba(10,31,68,0.2) 100%); z-index: 2; }
+        
+        .slide-content { position: relative; z-index: 3; width: 90%; max-width: 1200px; margin: 0 auto; color: var(--blanco-puro); transform: translateY(30px); transition: transform 1s ease, opacity 1s ease; opacity: 0; }
+        .slide.active .slide-content { transform: translateY(0); opacity: 1; }
+        
+        .slide-content h1 { font-size: 3.2rem; color: var(--blanco-puro); margin-bottom: 20px; line-height: 1.2; max-width: 800px; text-shadow: 2px 2px 10px rgba(0,0,0,0.3); }
+        .slide-content p { font-family: var(--font-subtitulos); font-size: 1.2rem; margin-bottom: 30px; max-width: 600px; }
+        
+        /* Controles Slider */
+        .slider-nav { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 4; display: flex; gap: 10px; }
+        .dot { width: 12px; height: 12px; background-color: rgba(255,255,255,0.4); border-radius: 50%; cursor: pointer; transition: 0.3s; }
+        .dot.active { background-color: var(--azul-electrico); transform: scale(1.3); }
+        .slider-arrows { position: absolute; top: 50%; width: 100%; display: flex; justify-content: space-between; padding: 0 20px; z-index: 4; transform: translateY(-50%); pointer-events: none; }
+        .arrow { pointer-events: auto; background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.5); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; font-size: 20px; backdrop-filter: blur(5px); }
+        .arrow:hover { background: var(--azul-electrico); border-color: var(--azul-electrico); }
 
         /* --- SERVICIOS --- */
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
@@ -120,14 +143,28 @@
         .footer-links a { color: #ccc; margin: 0 10px; transition: 0.3s; }
         .footer-links a:hover { color: var(--blanco-puro); }
 
+        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .hero-buttons { flex-direction: column; }
+            .slide-content h1 { font-size: 2.2rem; }
+            .header-cta .btn-primary { display: none; } /* Ocultar el botón agendar para ahorrar espacio en móvil */
+            .logo-img { height: 50px; }
             .urgency-selector { flex-direction: column; }
         }
     </style>
 </head>
 <body>
+
+    <header>
+        <div class="header-container">
+            <a href="#">
+                <img src="logo.jpg" alt="Logo Dr. Juan Felipe Landrón" class="logo-img" id="main-logo">
+            </a>
+            <div class="header-cta">
+                <a href="#agendar" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Agendar Cita</a>
+                <a href="tel:8492262318" class="btn btn-emergency"><i class="fas fa-phone-alt"></i> Urgencias</a>
+            </div>
+        </div>
+    </header>
 
     <a href="https://wa.me/18492262318?text=Hola,%20necesito%20una%20emergencia%20médica" class="floating-emergency" target="_blank" title="Emergencia 24/7">
         <i class="fas fa-ambulance"></i>
@@ -136,20 +173,62 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <section class="hero">
-        <div class="container">
-            <div class="hero-stars">
-                ★★★★★ <span style="font-family: var(--font-texto); font-size: 1rem;">Atención Especializada</span>
+    <section class="slider-container">
+        
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <div style="color: #FFD700; margin-bottom: 10px; font-size: 1.2rem;">★★★★★ Atención Especializada</div>
+                <h1>Cirugía por Artroscopia Mínimamente Invasiva</h1>
+                <p>Precisión médica para hombro, rodilla, codo y tobillo. Menos dolor, cicatrices invisibles y recuperación más rápida.</p>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <a href="#agendar" class="btn btn-primary">Evaluar mi caso</a>
+                </div>
             </div>
-            <h1>Recupera tu movimiento con atención especializada.</h1>
-            <p class="sub">Diagnóstico, tratamiento y cirugía especializada en columna, lesiones articulares y traumatología con atención personalizada.</p>
-            <h3>DR. JUAN FELIPE LANDRÓN DE LA ROSA</h3>
-            <p>Ortopeda | Cirujano de Columna | Artroscopia | Medicina Deportiva</p>
-            
-            <div class="hero-buttons">
-                <a href="#agendar" class="btn btn-primary"><i class="fas fa-calendar-check"></i> 🔵 AGENDAR CONSULTA</a>
-                <a href="tel:8492262318" class="btn btn-emergency"><i class="fas fa-bolt"></i> ⚡ EMERGENCIA 24/7</a>
+        </div>
+
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>Especialista en Lesiones de Hombro y Rodilla</h1>
+                <p>Tratamientos avanzados para recuperar tu movilidad, tratar el desgaste articular y volver a tu estilo de vida sin dolor.</p>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <a href="#agendar" class="btn btn-primary">Agendar Consulta</a>
+                </div>
             </div>
+        </div>
+
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>Atención Prioritaria a Pacientes</h1>
+                <p>Cuidado traumatológico experto y seguimiento constante para fracturas, esguinces y emergencias ortopédicas.</p>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <a href="tel:8492262318" class="btn btn-emergency">Llamar a Urgencias</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <h1>Consulta Pediátrica Especializada</h1>
+                <p>Cuidamos el desarrollo articular y óseo de los más pequeños. Corregimos posturas y tratamos lesiones con la mejor tecnología médica.</p>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <a href="#agendar" class="btn btn-primary">Agendar Cita Pediátrica</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="slider-arrows">
+            <div class="arrow prev-slide"><i class="fas fa-chevron-left"></i></div>
+            <div class="arrow next-slide"><i class="fas fa-chevron-right"></i></div>
+        </div>
+        <div class="slider-nav">
+            <div class="dot active" onclick="currentSlide(0)"></div>
+            <div class="dot" onclick="currentSlide(1)"></div>
+            <div class="dot" onclick="currentSlide(2)"></div>
+            <div class="dot" onclick="currentSlide(3)"></div>
         </div>
     </section>
 
@@ -342,6 +421,58 @@
     </footer>
 
     <script>
+        // --- 1. LÓGICA DEL SLIDER DINÁMICO ---
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const totalSlides = slides.length;
+        let slideInterval;
+
+        function showSlide(index) {
+            // Ocultar todos los slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Mostrar el slide seleccionado
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlideIndex = index;
+        }
+
+        function nextSlide() {
+            let newIndex = (currentSlideIndex + 1) % totalSlides;
+            showSlide(newIndex);
+        }
+
+        function prevSlide() {
+            let newIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+            showSlide(newIndex);
+        }
+
+        function currentSlide(index) {
+            showSlide(index);
+            resetInterval();
+        }
+
+        function startInterval() {
+            // Cambia la imagen cada 5.5 segundos
+            slideInterval = setInterval(nextSlide, 5500);
+        }
+
+        function resetInterval() {
+            clearInterval(slideInterval);
+            startInterval();
+        }
+
+        // Asignar eventos a las flechas del banner
+        document.querySelector('.next-slide').addEventListener('click', () => { nextSlide(); resetInterval(); });
+        document.querySelector('.prev-slide').addEventListener('click', () => { prevSlide(); resetInterval(); });
+
+        // Iniciar la rotación automática al cargar
+        startInterval();
+
+
+        // --- 2. LÓGICA DEL FORMULARIO INTELIGENTE ---
         function selectUrgency(element, type) {
             document.querySelectorAll('.urgency-label').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
