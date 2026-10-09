@@ -1,673 +1,312 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>.JC Jonathan Constanza CPA · Data Analyst · Consultoría Estratégica</title>
-  
-  <!-- Tipografías -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:wght@700&display=swap" rel="stylesheet">
-  
-  <style>
-    :root {
-      --azul: #0a2342;
-      --azul-claro: #1c3d5a;
-      --oro: #c5a572;
-      --crema: #f8fafc;
-      --blanco: #ffffff;
-      --texto-oscuro: #1e293b;
-      --texto-medio: #64748b;
-      --verde: #16a34a;
-      --rojo: #dc2626;
-      --nav-h: 60px;
-      --bottom-h: 65px;
-    }
-
-    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-    html, body { height:100%; overflow:hidden; }
-    body { font-family: 'Noto Sans', sans-serif; font-weight: 400; background: var(--crema); color: var(--texto-oscuro); max-width: 480px; margin: 0 auto; position: relative; }
-
-    /* TOP NAV */
-    .top-nav { position: fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; height:var(--nav-h); background: var(--azul); display: flex; align-items:center; justify-content:space-between; padding: 0 1.2rem; z-index: 200; box-shadow: 0 2px 20px rgba(10,35,66,0.3); }
-    .top-nav-logo { display:flex; align-items:center; gap:0.6rem; }
-    .top-monogram { width:36px; height:36px; background:rgba(197,165,114,0.15); border:1px solid rgba(197,165,114,0.4); border-radius:8px; display:flex; align-items:center; justify-content:center; }
-    .top-monogram span { font-family:'Noto Serif',serif; font-weight:700; color:var(--oro); font-size:0.85rem; }
-    .top-nav-info { display:flex; flex-direction:column; }
-    .top-nav-name { font-family:'Noto Serif',serif; font-weight:700; font-size:0.85rem; color:var(--blanco); }
-    .top-nav-sub { font-size:0.6rem; color:rgba(197,165,114,0.8); letter-spacing:0.1em; text-transform:uppercase; }
-    .top-nav-right { display:flex; align-items:center; gap:0.5rem; }
-    .nav-pill { background:rgba(197,165,114,0.15); border:1px solid rgba(197,165,114,0.3); border-radius:20px; padding:0.3rem 0.7rem; font-size:0.6rem; color:var(--oro); letter-spacing:0.1em; text-transform:uppercase; font-weight:600; display:flex; align-items:center; gap:0.3rem; }
-    .nav-pill .dot { width:6px; height:6px; background:#4ade80; border-radius:50%; animation:blink 2s infinite; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-    /* SCROLL CONTAINER */
-    .app-scroll { position: fixed; top:var(--nav-h); bottom:var(--bottom-h); left:50%; transform:translateX(-50%); width:100%; max-width:480px; overflow-y: auto; overflow-x:hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
-
-    /* PANTALLAS */
-    .screen { display:none; padding:1.2rem; min-height:100%; animation:fadeIn 0.25s ease; }
-    .screen.active { display:block; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-
-    /* BOTTOM NAV */
-    .bottom-nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; height:var(--bottom-h); background:var(--blanco); border-top:1px solid rgba(10,35,66,0.08); display:flex; align-items:center; z-index:200; box-shadow: 0 -4px 20px rgba(10,35,66,0.08); padding: 0 0.5rem; padding-bottom: env(safe-area-inset-bottom); }
-    .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:0.25rem; padding:0.4rem 0.2rem; cursor:pointer; transition:all 0.2s; border-radius:10px; border:none; background:none; }
-    .nav-item .nav-icon { font-size:1.25rem; transition:transform 0.2s; }
-    .nav-item .nav-label { font-size:0.55rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:var(--texto-medio); transition:color 0.2s; }
-    .nav-item.active .nav-label { color:var(--azul); font-weight:700; }
-    .nav-item.active .nav-icon { transform:translateY(-2px); }
-    .nav-item.active { background:rgba(10,35,66,0.05); }
-
-    /* CARDS & HELPERS */
-    .card { background:var(--blanco); border-radius:14px; border:1px solid rgba(10,35,66,0.06); box-shadow:0 2px 12px rgba(10,35,66,0.05); overflow:hidden; margin-bottom:1rem; }
-    .card-header { padding:1rem 1.2rem 0.8rem; border-bottom:1px solid rgba(10,35,66,0.05); display:flex; align-items:center; gap:0.6rem; }
-    .card-header-icon { font-size:1.1rem; }
-    .card-header-title { font-family:'Noto Serif',serif; font-weight:700; font-size:0.9rem; color:var(--azul); }
-    .card-header-badge { margin-left:auto; font-size:0.58rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--oro); background:rgba(197,165,114,0.12); border:1px solid rgba(197,165,114,0.25); padding:0.2rem 0.5rem; border-radius:4px; }
-    .card-body { padding:1.2rem; }
-    .section-label { font-size:0.65rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--texto-medio); margin-bottom:0.7rem; }
-
-    /* DASHBOARD */
-    .dash-hero { background: linear-gradient(135deg, var(--azul) 0%, var(--azul-claro) 100%); border-radius:16px; padding:1.5rem; margin-bottom:1rem; position:relative; overflow:hidden; color: white; }
-    .dash-hero::after { content:'.JC'; position:absolute; right:-0.5rem; bottom:-1rem; font-family:'Noto Serif',serif; font-weight:700; font-size:5rem; color:rgba(197,165,114,0.08); line-height:1; pointer-events:none; }
-    .dash-hero-date { font-size:0.65rem; color:rgba(197,165,114,0.85); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.3rem; }
-    .dash-hero-title { font-family:'Noto Serif',serif; font-weight:700; font-size:1.25rem; margin-bottom:0.2rem; }
-    .dash-hero-sub { font-size:0.78rem; opacity:0.85; }
-    .dash-kpis { display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; margin-bottom:1rem; }
-    .kpi-card { background:var(--blanco); border-radius:12px; padding:1rem; border:1px solid rgba(10,35,66,0.06); box-shadow:0 2px 8px rgba(10,35,66,0.04); position:relative; }
-    .kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--oro); }
-    .kpi-icon { font-size:1.3rem; margin-bottom:0.4rem; }
-    .kpi-value { font-family:'Noto Serif',serif; font-weight:700; font-size:1.25rem; color:var(--azul); }
-    .kpi-label { font-size:0.65rem; color:var(--texto-medio); margin-top:0.2rem; }
-    .kpi-trend { font-size:0.62rem; margin-top:0.3rem; font-weight:600; }
-    .kpi-trend.ok { color:var(--verde); }
-    .kpi-trend.warn { color:#b45309; }
-
-    .quick-actions { display:grid; grid-template-columns:repeat(4,1fr); gap:0.5rem; margin-bottom:1rem; }
-    .qa-btn { background:var(--blanco); border-radius:12px; padding:0.8rem 0.3rem; border:1px solid rgba(10,35,66,0.06); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:0.35rem; transition:all 0.2s; box-shadow:0 2px 6px rgba(10,35,66,0.04); }
-    .qa-btn:active { transform:scale(0.95); background:#f1f5f9; }
-    .qa-btn .qa-icon { font-size:1.2rem; }
-    .qa-btn .qa-label { font-size:0.58rem; font-weight:600; text-transform:uppercase; color:var(--azul); text-align:center; }
-
-    .alerta-item { display:flex; align-items:center; gap:0.8rem; padding:0.9rem 1.2rem; border-bottom:1px solid rgba(10,35,66,0.04); }
-    .alerta-item:last-child { border-bottom:none; }
-    .alerta-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-    .alerta-dot.rojo { background:var(--rojo); }
-    .alerta-dot.amarillo { background:#eab308; }
-    .alerta-dot.verde { background:var(--verde); }
-    .alerta-info { flex:1; }
-    .alerta-titulo { font-size:0.8rem; font-weight:600; color:var(--azul); margin-bottom:0.1rem; }
-    .alerta-fecha { font-size:0.68rem; color:var(--texto-medio); }
-    .alerta-dias { font-size:0.62rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:6px; }
-    .alerta-dias.urgente { background:rgba(220,38,38,0.1); color:var(--rojo); }
-    .alerta-dias.pronto { background:rgba(234,179,8,0.15); color:#a16207; }
-    .alerta-dias.ok { background:rgba(22,163,74,0.1); color:var(--verde); }
-
-    /* CHAT ASISTENTE */
-    .chat-wrap { display:flex; flex-direction:column; height: calc(100vh - var(--nav-h) - var(--bottom-h) - 2.4rem); }
-    .chat-messages { flex:1; overflow-y:auto; padding:0 0 1rem; display:flex; flex-direction:column; gap:0.8rem; }
-    .msg { display:flex; flex-direction:column; max-width:88%; }
-    .msg.user { align-self:flex-end; align-items:flex-end; }
-    .msg.bot { align-self:flex-start; align-items:flex-start; }
-    .msg-bubble { padding:0.75rem 1rem; border-radius:16px; font-size:0.82rem; line-height:1.5; }
-    .msg.user .msg-bubble { background:var(--azul); color:var(--blanco); border-bottom-right-radius:4px; }
-    .msg.bot .msg-bubble { background:var(--blanco); color:var(--texto-oscuro); border:1px solid rgba(10,35,66,0.08); border-bottom-left-radius:4px; box-shadow:0 2px 8px rgba(10,35,66,0.04); }
-    .chat-chips { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.8rem; }
-    .chat-chip { font-size:0.68rem; padding:0.4rem 0.8rem; background:var(--blanco); border:1px solid rgba(10,35,66,0.12); border-radius:20px; cursor:pointer; color:var(--azul); font-weight:500; }
-    .chat-chip:active { background:var(--azul); color:var(--oro); }
-    .chat-input-bar { display:flex; gap:0.5rem; align-items:center; padding-top:0.6rem; border-top:1px solid rgba(10,35,66,0.08); }
-    .chat-input { flex:1; background:var(--blanco); border:1.5px solid rgba(10,35,66,0.12); border-radius:12px; padding:0.7rem 1rem; font-size:0.85rem; outline:none; resize:none; font-family:inherit; }
-    .chat-send { width:42px; height:42px; border-radius:12px; background:var(--azul); color:var(--oro); border:none; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; }
-
-    /* CALCULADORA */
-    .calc-tabs { display:flex; background:var(--blanco); border-radius:12px; padding:4px; margin-bottom:1rem; border:1px solid rgba(10,35,66,0.06); }
-    .calc-tab { flex:1; padding:0.6rem; text-align:center; font-size:0.68rem; font-weight:600; text-transform:uppercase; border-radius:9px; cursor:pointer; border:none; background:none; color:var(--texto-medio); }
-    .calc-tab.active { background:var(--azul); color:var(--oro); }
-    .calc-panel { display:none; }
-    .calc-panel.active { display:block; }
-    .calc-field { margin-bottom:1rem; }
-    .calc-label { font-size:0.7rem; font-weight:600; color:var(--texto-medio); text-transform:uppercase; margin-bottom:0.4rem; display:block; }
-    .calc-input, .calc-select { width:100%; background:var(--blanco); border:1.5px solid rgba(10,35,66,0.12); border-radius:10px; padding:0.8rem 1rem; font-size:0.95rem; font-family:inherit; outline:none; }
-    .calc-btn { width:100%; padding:0.9rem; border-radius:12px; background:var(--azul); color:var(--oro); border:none; font-weight:700; text-transform:uppercase; cursor:pointer; font-size:0.8rem; }
-    .calc-result { display:none; background:linear-gradient(135deg, var(--azul), var(--azul-claro)); border-radius:14px; padding:1.2rem; margin-top:1rem; color:white; }
-    .calc-result.visible { display:block; }
-    .result-label { font-size:0.62rem; text-transform:uppercase; color:var(--oro); margin-bottom:0.3rem; letter-spacing:0.1em; }
-    .result-value { font-family:'Noto Serif',serif; font-weight:700; font-size:1.6rem; }
-    .result-breakdown { margin-top:0.8rem; display:flex; flex-direction:column; gap:0.4rem; font-size:0.75rem; }
-    .result-row { display:flex; justify-content:space-between; }
-    .result-row-val { font-weight:600; color:var(--oro); }
-
-    /* CALENDARIO DGII */
-    .cal-month { background:var(--azul); border-radius:14px; padding:1.2rem; margin-bottom:1rem; text-align:center; color:white; }
-    .cal-month-name { font-family:'Noto Serif',serif; font-weight:700; font-size:1rem; margin-bottom:0.2rem; }
-    .cal-month-sub { font-size:0.65rem; color:var(--oro); text-transform:uppercase; }
-    .cal-event { display:flex; align-items:center; gap:0.8rem; padding:0.9rem 1.2rem; border-bottom:1px solid rgba(10,35,66,0.05); }
-    .cal-date-box { min-width:44px; height:44px; border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-    .cal-date-box.urgente { background:rgba(220,38,38,0.1); color:var(--rojo); }
-    .cal-date-box.pronto { background:rgba(234,179,8,0.15); color:#a16207; }
-    .cal-date-box.normal { background:rgba(10,35,66,0.06); color:var(--azul); }
-    .cal-day { font-family:'Noto Serif',serif; font-weight:700; font-size:1rem; line-height:1; }
-    .cal-mes-short { font-size:0.55rem; font-weight:600; text-transform:uppercase; }
-    .cal-info { flex:1; }
-    .cal-titulo { font-size:0.8rem; font-weight:600; color:var(--azul); margin-bottom:0.1rem; }
-    .cal-desc { font-size:0.68rem; color:var(--texto-medio); }
-    .cal-tag { font-size:0.58rem; font-weight:700; text-transform:uppercase; padding:0.2rem 0.5rem; border-radius:6px; }
-    .cal-tag.urgente { background:rgba(220,38,38,0.1); color:var(--rojo); }
-    .cal-tag.pronto { background:rgba(234,179,8,0.15); color:#a16207; }
-    .cal-tag.normal { background:rgba(10,35,66,0.07); color:var(--azul); }
-
-    /* BLOG GENERATOR */
-    .blog-chips { display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.8rem; }
-    .blog-chip { font-size:0.65rem; padding:0.35rem 0.7rem; background:var(--blanco); border:1px solid rgba(10,35,66,0.12); border-radius:20px; cursor:pointer; color:var(--azul); }
-    .blog-textarea { width:100%; background:var(--blanco); border:1.5px solid rgba(10,35,66,0.12); border-radius:12px; padding:0.8rem; font-size:0.82rem; font-family:inherit; outline:none; height:80px; margin-bottom:0.8rem; resize:none; }
-    .blog-result { display:none; background:var(--blanco); border:1px solid rgba(197,165,114,0.3); border-radius:14px; margin-top:1rem; overflow:hidden; }
-    .blog-result.visible { display:block; }
-    .blog-result-header { background:var(--azul); padding:0.7rem 1rem; display:flex; justify-content:space-between; align-items:center; }
-    .blog-result-label { font-size:0.62rem; color:var(--oro); font-weight:600; text-transform:uppercase; }
-    .blog-copy-btn { background:none; border:1px solid rgba(197,165,114,0.4); color:var(--oro); border-radius:6px; padding:0.2rem 0.5rem; font-size:0.62rem; cursor:pointer; }
-    .blog-result-content { padding:1rem; font-size:0.8rem; line-height:1.7; color:var(--texto-oscuro); max-height:260px; overflow-y:auto; }
-
-    /* AGENDAMIENTO & WHATSAPP */
-    .btn-action { display:block; text-align:center; padding:0.85rem; background:var(--azul); color:var(--oro); border-radius:12px; text-decoration:none; font-weight:700; font-size:0.82rem; margin-top:1rem; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.JC Jonathan Constanza CPA · Data Analyst · Consultor</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .agenda-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2.5rem 1.5rem;
+            max-width: 650px;
+            margin: 2rem auto;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(10, 35, 66, 0.08);
+            border: 1px solid rgba(10, 35, 66, 0.08);
+        }
+        .agenda-card h4 {
+            font-size: 1.4rem;
+            color: #0a2342;
+            margin-bottom: 0.8rem;
+        }
+        .agenda-card p {
+            font-size: 0.95rem;
+            color: #64748b;
+            margin-bottom: 1.8rem;
+            line-height: 1.6;
+        }
+        .btn-whatsapp-direct {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            background-color: #25d366;
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-whatsapp-direct:hover {
+            background-color: #1ebe5d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+        .btn-whatsapp-direct svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+        .agenda-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        .agenda-badges span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- TOP BAR -->
-  <header class="top-nav">
-    <div class="top-nav-logo">
-      <div class="top-monogram"><span>.JC</span></div>
-      <div class="top-nav-info">
-        <span class="top-nav-name">Jonathan Constanza</span>
-        <span class="top-nav-sub">CPA · Data Analyst</span>
-      </div>
-    </div>
-    <div class="top-nav-right">
-      <div class="nav-pill"><span class="dot"></span> 2026 Fiscal</div>
-    </div>
-  </header>
+    <!-- NAVEGACIÓN -->
+    <nav>
+        <div class="logo">.JC</div>
+        <ul>
+            <li><a href="#propuesta">Propuesta</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#recursos">Recursos</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="#consultoria">Sobre JC</a></li>
+        </ul>
+        <a href="#consultoria" class="btn">Agendar Consulta</a>
+    </nav>
 
-  <!-- CONTENIDO DE PANTALLAS -->
-  <main class="app-scroll">
+    <!-- HERO SECTION -->
+    <header id="hero">
+        <p>República Dominicana · Consultoría de Élite</p>
+        <h1>Transformando datos complejos en <em>decisiones rentables</em></h1>
+        <p>Consultoría estratégica y análisis de datos de alto impacto para empresas que buscan escalar con certeza.</p>
+        <div class="hero-buttons">
+            <a href="#recursos" class="btn">Obtener Checklist Fiscal 2026</a>
+            <a href="#servicios" class="btn-outline">Ver Servicios</a>
+        </div>
+        <div class="stats">
+            <span><strong>10+</strong> Años de experiencia</span>
+            <span><strong>150+</strong> Empresas asesoradas</span>
+            <span><strong>100%</strong> Enfoque estratégico</span>
+        </div>
+    </header>
 
-    <!-- 1. DASHBOARD -->
-    <section class="screen active" id="screen-dashboard">
-      <div class="dash-hero">
-        <div class="dash-hero-date" id="dash-date">Actualizado 2026</div>
-        <div class="dash-hero-title">Buenos días, Jonathan</div>
-        <div class="dash-hero-sub">Resumen fiscal y financiero estratégico</div>
-      </div>
-
-      <p class="section-label">Alertas próximas DGII</p>
-      <div class="card">
-        <div class="alerta-item">
-          <div class="alerta-dot rojo"></div>
-          <div class="alerta-info">
-            <div class="alerta-titulo">IR-2 Personas Físicas</div>
-            <div class="alerta-fecha">Vence 30 de abril 2026</div>
-          </div>
-          <div class="alerta-dias urgente">Próximo</div>
+    <!-- PROPUESTA DE VALOR -->
+    <section id="propuesta">
+        <h2>¿Tu contabilidad es un registro del pasado o un mapa para tu futuro?</h2>
+        <p>En JC Consultoría, combinamos rigor contable con inteligencia de datos para que cada número cuente una historia que impulsa tu negocio hacia adelante.</p>
+        
+        <div class="propuesta-grid">
+             <div class="propuesta-item">
+                <h3>📊 Impuestos</h3>
+                <p>Planificación fiscal inteligente. ITBIS, IR17, cierres anuales y cumplimiento normativo con enfoque en optimización legal de tu carga tributaria.</p>
+            </div>
+             <div class="propuesta-item">
+                <h3>👥 Nómina</h3>
+                <p>Gestión precisa y oportuna de tu nómina, cumpliendo con la legislación laboral dominicana y maximizando la eficiencia de tu estructura de costos.</p>
+            </div>
+             <div class="propuesta-item">
+                <h3>🔍 Auditoría & Data</h3>
+                <p>Auditoría estratégica con dashboards de rentabilidad, KPIs y análisis predictivo para convertir tus datos en ventaja competitiva real.</p>
+            </div>
         </div>
-        <div class="alerta-item">
-          <div class="alerta-dot amarillo"></div>
-          <div class="alerta-info">
-            <div class="alerta-titulo">ITBIS — Período mensual</div>
-            <div class="alerta-fecha">Vence día 20 de cada mes</div>
-          </div>
-          <div class="alerta-dias pronto">Mensual</div>
-        </div>
-        <div class="alerta-item">
-          <div class="alerta-dot verde"></div>
-          <div class="alerta-info">
-            <div class="alerta-titulo">TSS — Nómina mensual</div>
-            <div class="alerta-fecha">Vence día 3 del mes vencido</div>
-          </div>
-          <div class="alerta-dias ok">Regular</div>
-        </div>
-      </div>
-
-      <p class="section-label">Accesos rápidos</p>
-      <div class="quick-actions">
-        <button class="qa-btn" onclick="goTo('asistente')">
-          <span class="qa-icon">💬</span>
-          <span class="qa-label">Consultar IA</span>
-        </button>
-        <button class="qa-btn" onclick="goTo('calculadora')">
-          <span class="qa-icon">🧮</span>
-          <span class="qa-label">Calcular</span>
-        </button>
-        <button class="qa-btn" onclick="goTo('calendario')">
-          <span class="qa-icon">📅</span>
-          <span class="qa-label">Calendario</span>
-        </button>
-        <button class="qa-btn" onclick="goTo('blog')">
-          <span class="qa-icon">✍️</span>
-          <span class="qa-label">Blog IA</span>
-        </button>
-      </div>
-
-      <p class="section-label">Indicadores clave</p>
-      <div class="dash-kpis">
-        <div class="kpi-card">
-          <div class="kpi-icon">🏛️</div>
-          <div class="kpi-value">18%</div>
-          <div class="kpi-label">Tasa ITBIS general</div>
-          <div class="kpi-trend ok">✓ Vigente 2026</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-icon">📊</div>
-          <div class="kpi-value">27%</div>
-          <div class="kpi-label">ISR Personas Jurídicas</div>
-          <div class="kpi-trend ok">✓ Vigente</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-icon">👥</div>
-          <div class="kpi-value">9.97%</div>
-          <div class="kpi-label">Cotiz. empleador TSS</div>
-          <div class="kpi-trend warn">⚠ Ajustado</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-icon">💡</div>
-          <div class="kpi-value">e-CF</div>
-          <div class="kpi-label">Factura Electrónica</div>
-          <div class="kpi-trend warn">⚠ Mandatorio</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-body">
-          <h4 style="font-family:'Noto Serif',serif; color:var(--azul); margin-bottom:0.5rem;">¿Necesitas consultoría personalizada?</h4>
-          <p style="font-size:0.78rem; color:var(--texto-medio); margin-bottom:1rem;">Diagnóstico financiero y fiscal directo para tu empresa en República Dominicana.</p>
-          <a href="https://wa.me/18099314911" target="_blank" class="btn-action">Contactar vía WhatsApp (809-931-4911) →</a>
-        </div>
-      </div>
     </section>
 
-    <!-- 2. ASISTENTE FISCAL -->
-    <section class="screen" id="screen-asistente">
-      <div class="chat-wrap">
-        <div class="chat-messages" id="chat-messages">
-          <div class="msg bot">
-            <div class="msg-bubble">
-              Hola, soy tu asistente tributario y de negocio de <strong>JC Consultoría</strong>. ¿Tienes dudas sobre ITBIS, TSS, IR-2 o facturación electrónica e-CF?
+    <!-- SERVICIOS PROFESIONALES -->
+    <section id="servicios">
+        <h2>Soluciones contables y fiscales de alto impacto</h2>
+        <p>Cada servicio está diseñado para generar valor estratégico, no solo cumplimiento.</p>
+        
+        <div class="service-grid">
+            <div class="service-card">
+                <h3>01 🏛 Gestión Fiscal Integral</h3>
+                <p>Planificación tributaria proactiva que reduce tu carga legal y te mantiene en cumplimiento total con la DGII y los entes reguladores dominicanos.</p>
+                <div class="tags"><span>ITBIS</span><span>IR17</span><span>Cierre Anual</span><span>Planificación</span></div>
             </div>
-          </div>
-        </div>
 
-        <div class="chat-chips">
-          <span class="chat-chip" onclick="enviarChip('¿Qué es el e-CF?')">¿Qué es el e-CF?</span>
-          <span class="chat-chip" onclick="enviarChip('¿Cuándo vence el ITBIS?')">¿Cuándo vence el ITBIS?</span>
-          <span class="chat-chip" onclick="enviarChip('¿Cómo reduzco mi ISR legalmente?')">Reducir ISR</span>
-          <span class="chat-chip" onclick="enviarChip('Obligaciones TSS del empleador')">Obligaciones TSS</span>
-        </div>
-
-        <div class="chat-input-bar">
-          <textarea class="chat-input" id="chat-input" placeholder="Escribe tu consulta fiscal…" rows="1"></textarea>
-          <button class="chat-send" id="chat-send" onclick="enviarMensaje()">➤</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. CALCULADORA -->
-    <section class="screen" id="screen-calculadora">
-      <div class="calc-tabs">
-        <button class="calc-tab active" onclick="switchCalc('itbis', this)">ITBIS</button>
-        <button class="calc-tab" onclick="switchCalc('isr', this)">ISR</button>
-        <button class="calc-tab" onclick="switchCalc('anticipos', this)">Anticipos</button>
-      </div>
-
-      <!-- ITBIS -->
-      <div class="calc-panel active" id="calc-itbis">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-header-icon">🧾</span>
-            <span class="card-header-title">Calculadora de ITBIS</span>
-            <span class="card-header-badge">18% / 16%</span>
-          </div>
-          <div class="card-body">
-            <div class="calc-field">
-              <label class="calc-label">Monto base (RD$)</label>
-              <input type="number" class="calc-input" id="itbis-monto" placeholder="Ej: 50,000" oninput="calcItbis()">
-            </div>
-            <div class="calc-field">
-              <label class="calc-label">Tipo de operación</label>
-              <select class="calc-select" id="itbis-tipo" onchange="calcItbis()">
-                <option value="18">Gravado estándar (18%)</option>
-                <option value="16">Tasa reducida (16%)</option>
-                <option value="0">Exento (0%)</option>
-              </select>
-            </div>
-            <div class="calc-result" id="itbis-result">
-              <div class="result-label">ITBIS calculado</div>
-              <div class="result-value" id="itbis-valor">RD$ 0.00</div>
-              <div class="result-breakdown">
-                <div class="result-row">
-                  <span>Base Imponible:</span>
-                  <span class="result-row-val" id="itbis-base">RD$ 0.00</span>
+            <div class="service-card">
+                <h3>02 📈 Estrategia de Datos & BI</h3>
+                <p>Dashboards de rentabilidad, análisis de KPIs y optimización de flujo de caja. Convierte tus números en decisiones con impacto medible.</p>
+                <div class="tags"><span>Dashboards</span><span>KPIs</span><span>Cash Flow</span><span>Business Intelligence</span></div>
+                
+                <div class="dashboard-showcase">
+                    <div class="dashboard-header">
+                        <span class="pulse-dot"></span>
+                        <p>Interactúa con nuestro Dashboard de Demostración en tiempo real</p>
+                    </div>
+                    <div class="iframe-container">
+                        <iframe width="100%" height="600" src="https://lookerstudio.google.com/embed/reporting/TU_ID_AQUI/page/1M" frameborder="0" style="border:0" allowfullscreen></iframe>
+                    </div>
                 </div>
-                <div class="result-row">
-                  <span>Total con ITBIS:</span>
-                  <span class="result-row-val" id="itbis-total">RD$ 0.00</span>
-                </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- ISR -->
-      <div class="calc-panel" id="calc-isr">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-header-icon">📈</span>
-            <span class="card-header-title">Estimación de ISR</span>
-            <span class="card-header-badge">RD 2026</span>
-          </div>
-          <div class="card-body">
-            <div class="calc-field">
-              <label class="calc-label">Ingreso neto anual (RD$)</label>
-              <input type="number" class="calc-input" id="isr-monto" placeholder="Ej: 1,200,000">
+            <div class="service-card">
+                <h3>03 👔 Nómina & Recursos Humanos</h3>
+                <p>Administración completa de nómina con cumplimiento del Código Laboral dominicano, TSS y estructura de beneficios eficiente.</p>
+                <div class="tags"><span>TSS</span><span>Código Laboral</span><span>Beneficios</span><span>Liquidaciones</span></div>
             </div>
-            <div class="calc-field">
-              <label class="calc-label">Tipo de Contribuyente</label>
-              <select class="calc-select" id="isr-tipo">
-                <option value="juridica">Persona Jurídica (27%)</option>
-                <option value="fisica">Persona Física (Escala DGII)</option>
-              </select>
-            </div>
-            <button class="calc-btn" onclick="calcIsr()">Calcular ISR</button>
-            <div class="calc-result" id="isr-result">
-              <div class="result-label">ISR Estimado Anual</div>
-              <div class="result-value" id="isr-valor">RD$ 0.00</div>
-              <div class="result-breakdown">
-                <div class="result-row">
-                  <span>Impuesto Mensual aprox.:</span>
-                  <span class="result-row-val" id="isr-mensual">RD$ 0.00</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- ANTICIPOS -->
-      <div class="calc-panel" id="calc-anticipos">
-        <div class="card">
-          <div class="card-header">
-            <span class="card-header-icon">💰</span>
-            <span class="card-header-title">Anticipos de ISR</span>
-            <span class="card-header-badge">Cuotas</span>
-          </div>
-          <div class="card-body">
-            <div class="calc-field">
-              <label class="calc-label">ISR liquidado año anterior (RD$)</label>
-              <input type="number" class="calc-input" id="ant-monto" placeholder="Ej: 300,000">
+            <div class="service-card">
+                <h3>04 🔐 Auditoría Estratégica</h3>
+                <p>Revisión profunda de estados financieros y procesos internos. Identificamos riesgos y oportunidades que otros no ven.</p>
+                 <div class="tags"><span>Estados Financieros</span><span>Control Interno</span><span>Due Diligence</span><span>NIIF</span></div>
             </div>
-            <button class="calc-btn" onclick="calcAnticipos()">Calcular Cuotas Mensuales</button>
-            <div class="calc-result" id="ant-result">
-              <div class="result-label">Cuota mensual estimada</div>
-              <div class="result-value" id="ant-cuota">RD$ 0.00</div>
-              <div class="result-breakdown">
-                <div class="result-row">
-                  <span>Día de vencimiento:</span>
-                  <span class="result-row-val">Día 15 de cada mes</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
     </section>
 
-    <!-- 4. CALENDARIO DGII -->
-    <section class="screen" id="screen-calendario">
-      <div class="cal-month">
-        <div class="cal-month-name">Calendario Tributario 2026</div>
-        <div class="cal-month-sub">Vencimientos DGII & TSS</div>
-      </div>
-
-      <div class="card">
-        <div class="cal-event">
-          <div class="cal-date-box urgente">
-            <span class="cal-day">20</span>
-            <span class="cal-mes-short">Mensual</span>
-          </div>
-          <div class="cal-info">
-            <div class="cal-titulo">ITBIS & Retenciones (IR-17)</div>
-            <div class="cal-desc">Declaración y pago del ITBIS período anterior</div>
-          </div>
-          <span class="cal-tag urgente">Fijo</span>
-        </div>
-
-        <div class="cal-event">
-          <div class="cal-date-box normal">
-            <span class="cal-day">15</span>
-            <span class="cal-mes-short">Mensual</span>
-          </div>
-          <div class="cal-info">
-            <div class="cal-titulo">Anticipos del ISR</div>
-            <div class="cal-desc">Pago de cuota de anticipos a personas jurídicas</div>
-          </div>
-          <span class="cal-tag normal">Pendiente</span>
-        </div>
-
-        <div class="cal-event">
-          <div class="cal-date-box pronto">
-            <span class="cal-day">03</span>
-            <span class="cal-mes-short">Mensual</span>
-          </div>
-          <div class="cal-info">
-            <div class="cal-titulo">TSS - Pago de Seguridad Social</div>
-            <div class="cal-desc">Fecha límite de pago de nómina TSS sin recargos</div>
-          </div>
-          <span class="cal-tag pronto">Laboral</span>
-        </div>
-
-        <div class="cal-event">
-          <div class="cal-date-box urgente">
-            <span class="cal-day">30</span>
-            <span class="cal-mes-short">Abr</span>
-          </div>
-          <div class="cal-info">
-            <div class="cal-titulo">Declaración Jurada IR-2 / IR-1</div>
-            <div class="cal-desc">Cierre de ejercicio fiscal anual DGII</div>
-          </div>
-          <span class="cal-tag urgente">Anual</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. GENERADOR BLOG -->
-    <section class="screen" id="screen-blog">
-      <div class="card">
-        <div class="card-header">
-          <span class="card-header-icon">✍️</span>
-          <span class="card-header-title">Generador de Artículos</span>
-          <span class="card-header-badge">IA Fiscal</span>
-        </div>
-        <div class="card-body">
-          <p class="section-label">Temas recomendados</p>
-          <div class="blog-chips">
-            <span class="blog-chip" onclick="setBlogTema('Facturación electrónica e-CF 2026')">Facturación e-CF</span>
-            <span class="blog-chip" onclick="setBlogTema('5 errores comunes en la declaración del ITBIS')">Errores ITBIS</span>
-            <span class="blog-chip" onclick="setBlogTema('Cómo calcular correctamente las retenciones de TSS')">TSS Empleadores</span>
-            <span class="blog-chip" onclick="setBlogTema('Estrategias para optimizar el flujo de caja en PYMES')">Flujo de Caja</span>
-          </div>
-
-          <textarea class="blog-textarea" id="blog-input" placeholder="Escribe o selecciona el tema tributario…"></textarea>
-          <button class="calc-btn" onclick="generarArticulo()">✦ Redactar borrador</button>
-
-          <div class="blog-result" id="blog-result">
-            <div class="blog-result-header">
-              <span class="blog-result-label">✦ Borrador generado</span>
-              <button class="blog-copy-btn" onclick="copiarArticulo()">Copiar</button>
+    <!-- CENTRO DE RECURSOS -->
+    <section id="recursos">
+        <h2>Descarga tu Checklist Fiscal 2026</h2>
+        <p>Guía técnica exclusiva con los puntos críticos de cumplimiento fiscal para empresas dominicanas. Gratuito, con rigor de experto.</p>
+        
+        <div class="recursos-container">
+            <div class="recursos-info">
+                <span>Descarga Gratuita</span>
+                <h3>Checklist Fiscal Dominicano 2026</h3>
+                <p>Edición Especial · JC Consultoría Estratégica</p>
+                <ul>
+                    <li>Obligaciones ITBIS mensuales y anuales</li>
+                    <li>Declaración IR-17 y plazos críticos</li>
+                    <li>Cierre fiscal 2025 paso a paso</li>
+                    <li>Optimización de carga tributaria legal</li>
+                    <li>Principales cambios DGII 2026</li>
+                    <li>Control de retenciones y anticipos</li>
+                    <li>Requisitos de libros contables</li>
+                </ul>
             </div>
-            <div class="blog-result-content" id="blog-content"></div>
-          </div>
+
+            <div class="form-container">
+                <h4>.JC Consultoría</h4>
+                <p>Acceso Inmediato · Sin Costo</p>
+                <form action="https://formspree.io/f/TU_ID_DE_FORMSPREE" method="POST" class="lead-form">
+                    <input type="text" name="Nombre Completo" placeholder="Nombre Completo" required>
+                    <input type="text" name="Empresa" placeholder="Empresa / Negocio" required>
+                    <input type="tel" name="WhatsApp" placeholder="WhatsApp" required>
+                    <input type="email" name="Email" placeholder="Correo Electrónico" required>
+                    
+                    <input type="hidden" name="_next" value="https://jcconstanza.github.io/jc-consultoria-estrategica/checklist-gracias.html">
+                    
+                    <button type="submit" class="btn">Descargar Checklist Fiscal 2026 →</button>
+                    <p class="form-note">🔒 Tu información es confidencial. Sin spam, sin ventas agresivas.</p>
+                </form>
+            </div>
         </div>
-      </div>
     </section>
 
-  </main>
+    <!-- CONSULTORÍA PRIVADA (SIN CALENDLY) -->
+    <section id="consultoria">
+        <h2>Jonathan Constanza</h2>
+        <p>CPA · Consultor Estratégico · Data Analyst</p>
+        
+        <div class="metodologia">
+            <span>Metodología</span>
+            <h3><strong>Datos</strong> + <strong>Estrategia</strong> = <strong>Resultados</strong></h3>
+        </div>
 
-  <!-- BOTTOM BAR DE NAVEGACIÓN -->
-  <nav class="bottom-nav">
-    <button class="nav-item active" onclick="goTo('dashboard', this)">
-      <span class="nav-icon">📊</span>
-      <span class="nav-label">Panel</span>
-    </button>
-    <button class="nav-item" onclick="goTo('asistente', this)">
-      <span class="nav-icon">💬</span>
-      <span class="nav-label">Asistente</span>
-    </button>
-    <button class="nav-item" onclick="goTo('calculadora', this)">
-      <span class="nav-icon">🧮</span>
-      <span class="nav-label">Calcular</span>
-    </button>
-    <button class="nav-item" onclick="goTo('calendario', this)">
-      <span class="nav-icon">📅</span>
-      <span class="nav-label">Agenda</span>
-    </button>
-    <button class="nav-item" onclick="goTo('blog', this)">
-      <span class="nav-icon">✍️</span>
-      <span class="nav-label">Blog</span>
-    </button>
-  </nav>
+        <h3>Tu estratega de negocios de confianza en República Dominicana</h3>
+        <p>Jonathan combina la precisión técnica de un CPA con la visión analítica de un Data Analyst para ofrecer consultoría de élite a empresas que buscan escalar con certeza en el mercado dominicano.</p>
+        
+        <ul class="consultoria-lista">
+            <li>◆ Diagnóstico financiero completo de tu empresa en la primera sesión</li>
+            <li>◆ Plan estratégico personalizado con métricas de seguimiento claras</li>
+            <li>◆ Acompañamiento continuo con reportes de gestión mensuales</li>
+            <li>◆ Acceso directo por WhatsApp para consultas urgentes</li>
+        </ul>
 
-  <!-- LÓGICA DE INTERACCIÓN -->
-  <script>
-    // Navegación entre pantallas
-    function goTo(screenId, btn) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      const target = document.getElementById('screen-' + screenId);
-      if (target) target.classList.add('active');
+        <!-- MÓDULO DIRECTO DE AGENDAMIENTO VÍA WHATSAPP -->
+        <div class="agenda-card">
+            <h4>Agenda tu Diagnóstico Financiero</h4>
+            <p>Coordina directamente una llamada o reunión inicial con Jonathan Constanza a través de WhatsApp corporativo.</p>
+            
+            <a href="https://wa.me/18099314911?text=Hola%20Jonathan,%20quiero%20agendar%20un%20diagn%C3%B3stico%20financiero%20para%20mi%20empresa" class="btn-whatsapp-direct" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                Agendar por WhatsApp (809-931-4911)
+            </a>
 
-      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-      if (btn) {
-        btn.classList.add('active');
-      } else {
-        const matchingBtn = Array.from(document.querySelectorAll('.nav-item')).find(b => 
-          b.getAttribute('onclick') && b.getAttribute('onclick').includes(screenId)
-        );
-        if (matchingBtn) matchingBtn.classList.add('active');
-      }
-      document.querySelector('.app-scroll').scrollTop = 0;
-    }
+            <div class="agenda-badges">
+                <span>⚡ Respuesta en minutos</span>
+                <span>📅 Sesiones virtuales o presenciales</span>
+            </div>
+        </div>
+    </section>
 
-    // Calculadora ITBIS
-    function calcItbis() {
-      const monto = parseFloat(document.getElementById('itbis-monto').value) || 0;
-      const tasa = parseFloat(document.getElementById('itbis-tipo').value) / 100;
-      const itbis = monto * tasa;
-      const total = monto + itbis;
+    <!-- BLOG PREVIEW -->
+    <section id="blog-preview">
+        <div class="blog-header">
+            <h2>Inteligencia fiscal para tu empresa</h2>
+            <a href="blog.html" class="blog-link">Ver todos los artículos →</a>
+        </div>
+        <div class="blog-grid">
+            <div class="blog-card">
+                <span>📢 Aviso DGII</span>
+                <h4>DGII amplía plazo para declaración IR-2 hasta el 30 de abril 2026</h4>
+                <p>Todo lo que necesitas saber sobre la extensión y cómo optimizar tu declaración.</p>
+                <a href="blog.html">Leer más →</a>
+            </div>
+            <div class="blog-card">
+                <span>📊 Data & Análisis</span>
+                <h4>5 KPIs financieros que todo empresario dominicano debe monitorear</h4>
+                <p>Métricas clave con fórmulas aplicables desde hoy para escalar tu negocio.</p>
+                <a href="blog.html">Leer más →</a>
+            </div>
+            <div class="blog-card">
+                <span>👥 Nómina & RRHH</span>
+                <h4>TSS 2026: Cambios en la tasa de cotización que debes ajustar ya</h4>
+                <p>Verifica si tu empresa está liquidando correctamente o expuesta a auditoría.</p>
+                <a href="blog.html">Leer más →</a>
+            </div>
+        </div>
+    </section>
 
-      document.getElementById('itbis-valor').innerText = 'RD$ ' + itbis.toLocaleString('es-DO', {minimumFractionDigits: 2});
-      document.getElementById('itbis-base').innerText = 'RD$ ' + monto.toLocaleString('es-DO', {minimumFractionDigits: 2});
-      document.getElementById('itbis-total').innerText = 'RD$ ' + total.toLocaleString('es-DO', {minimumFractionDigits: 2});
-      document.getElementById('itbis-result').classList.add('visible');
-    }
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">.JC</div>
+        <h2>Jonathan Constanza Consultoría Estratégica & Data</h2>
+        <p>Consultoría contable y estratégica de élite para empresas dominicanas que buscan crecer con certeza y datos.</p>
+        
+        <div class="footer-contact">
+            <p>📱 809-931-4911</p>
+            <p>📸 @jcconsultoriaestrategica</p>
+            <p>📍 República Dominicana</p>
+        </div>
 
-    // Calculadora ISR
-    function calcIsr() {
-      const monto = parseFloat(document.getElementById('isr-monto').value) || 0;
-      const tipo = document.getElementById('isr-tipo').value;
-      let totalIsr = 0;
+        <div class="footer-links-grid">
+            <div class="footer-col">
+                <h4>Servicios</h4>
+                <ul>
+                    <li><a href="#servicios">Gestión Fiscal</a></li>
+                    <li><a href="#servicios">Estrategia de Datos</a></li>
+                    <li><a href="#servicios">Nómina & RRHH</a></li>
+                    <li><a href="#servicios">Auditoría Estratégica</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#recursos">Checklist Fiscal 2026</a></li>
+                    <li><a href="#consultoria">Consultoría Privada</a></li>
+                    <li><a href="https://wa.me/18099314911">Agendar Reunión</a></li>
+                    <li><a href="#propuesta">Nuestra Metodología</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2026 Jonathan Constanza | Consultoría Estratégica. Todos los derechos reservados.</p>
+            <div class="social-links">
+                <a href="https://wa.me/18099314911" target="_blank" rel="noopener noreferrer">WhatsApp</a> · 
+                <a href="#">Instagram</a> · 
+                <a href="#">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
 
-      if (tipo === 'juridica') {
-        totalIsr = monto * 0.27;
-      } else {
-        // Escala básica simplificada personas físicas RD
-        if (monto > 867123) {
-          totalIsr = 79776 + ((monto - 867123) * 0.25);
-        } else if (monto > 624329) {
-          totalIsr = 31216 + ((monto - 624329) * 0.20);
-        } else if (monto > 416220) {
-          totalIsr = (monto - 416220) * 0.15;
-        } else {
-          totalIsr = 0;
-        }
-      }
-
-      document.getElementById('isr-valor').innerText = 'RD$ ' + totalIsr.toLocaleString('es-DO', {minimumFractionDigits: 2});
-      document.getElementById('isr-mensual').innerText = 'RD$ ' + (totalIsr / 12).toLocaleString('es-DO', {minimumFractionDigits: 2});
-      document.getElementById('isr-result').classList.add('visible');
-    }
-
-    // Calculadora Anticipos
-    function calcAnticipos() {
-      const monto = parseFloat(document.getElementById('ant-monto').value) || 0;
-      const cuota = monto / 12;
-      document.getElementById('ant-cuota').innerText = 'RD$ ' + cuota.toLocaleString('es-DO', {minimumFractionDigits: 2});
-      document.getElementById('ant-result').classList.add('visible');
-    }
-
-    // Selector pestañas calculadora
-    function switchCalc(tipo, btn) {
-      document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
-      document.getElementById('calc-' + tipo).classList.add('active');
-      btn.classList.add('active');
-    }
-
-    // Asistente Fiscal simulado
-    function enviarChip(texto) {
-      document.getElementById('chat-input').value = texto;
-      enviarMensaje();
-    }
-
-    function enviarMensaje() {
-      const input = document.getElementById('chat-input');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const container = document.getElementById('chat-messages');
-
-      // Burbuja usuario
-      const userDiv = document.createElement('div');
-      userDiv.className = 'msg user';
-      userDiv.innerHTML = `<div class="msg-bubble">${text}</div>`;
-      container.appendChild(userDiv);
-      input.value = '';
-
-      // Respuesta contextual simulada
-      setTimeout(() => {
-        let resp = "Con respecto a tu consulta en República Dominicana, la normativa DGII exige cumplimiento puntual en los formatos 606, 607 y la liquidación vía oficina virtual. Para un diagnóstico a medida de tu empresa, coordina tu sesión con Jonathan Constanza.";
-        if (text.toLowerCase().includes('itbis')) {
-          resp = "El ITBIS en República Dominicana tiene una tasa general del 18% y vence los días 20 de cada mes. Recuerda reportar previamente los formatos 606 (compras) y 607 (ventas).";
-        } else if (text.toLowerCase().includes('cf') || text.toLowerCase().includes('factura')) {
-          resp = "La Ley 32-23 establece el calendario obligatorio para la Facturación Electrónica (e-CF) en República Dominicana. Asegúrate de contar con certificado digital y software homologado ante la DGII.";
-        } else if (text.toLowerCase().includes('tss')) {
-          resp = "Las cotizaciones de TSS vencen el 3 de cada mes. El aporte patronal consolidado ronda el 9.97% (salud, pensiones y riesgos laborales).";
-        }
-
-        const botDiv = document.createElement('div');
-        botDiv.className = 'msg bot';
-        botDiv.innerHTML = `<div class="msg-bubble">${resp}</div>`;
-        container.appendChild(botDiv);
-        container.scrollTop = container.scrollHeight;
-      }, 500);
-
-      container.scrollTop = container.scrollHeight;
-    }
-
-    // Generador de Blog
-    function setBlogTema(tema) {
-      document.getElementById('blog-input').value = tema;
-    }
-
-    function generarArticulo() {
-      const tema = document.getElementById('blog-input').value.trim() || 'Cumplimiento fiscal y rentabilidad empresarial';
-      const output = `### ${tema}\n\nEn el contexto empresarial dominicano actual, optimizar la carga fiscal y entender los requerimientos de la DGII no es solo un deber legal, sino una ventaja competitiva directa.\n\n1. Diagnóstico del cumplimiento: Revisión de retenciones y soporte con e-CF.\n2. Estrategia de flujo de caja: Evitar multas y recargos por mora en ITBIS e IR-17.\n3. Monitoreo de KPIs: Decisiones basadas en datos reales para maximizar rentabilidad.\n\n*Por Jonathan Constanza, CPA & Data Analyst.*`;
-      
-      document.getElementById('blog-content').innerText = output;
-      document.getElementById('blog-result').classList.add('visible');
-    }
-
-    function copiarArticulo() {
-      const text = document.getElementById('blog-content').innerText;
-      navigator.clipboard.writeText(text).then(() => alert('Borrador copiado al portapapeles.'));
-    }
-  </script>
 </body>
 </html>
